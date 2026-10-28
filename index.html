@@ -1,1 +1,338 @@
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0c09">
+<title>PUNHETA SEMANAL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bitter:wght@800;900&display=swap');
+:root{
+--bg:#0a0c09;--panel:#11140e;--panel2:#161a11;--ink:#dfe2d0;--dim:#8d947e;
+--green:#a9c34b;--mucus:#cdbd3f;--red:#c04c3c;--purple:#b46cf5;--line:#2b3123;--line2:#3d4530;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0a0c09;color:#dfe2d0}
+#wrap{min-height:100vh;background-color:#0a0c09;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+background-blend-mode:overlay;font-family:'Space Mono',ui-monospace,monospace;font-size:15px;line-height:1.5;color:#dfe2d0}
+#app{max-width:700px;margin:0 auto;padding:16px 14px 70px}
+h1{font-family:Bitter,Georgia,serif;font-weight:900;font-size:clamp(26px,8vw,44px);line-height:.95;letter-spacing:-1px;margin:0 0 4px;color:#cdbd3f;text-shadow:0 0 18px rgba(205,189,63,.22),1px 1px 0 #000;filter:blur(.25px)}
+.sub{color:#8d947e;font-size:12px;margin-bottom:14px}
+.panel{border:2px solid #3d4530;background:linear-gradient(180deg,#141810,#0e1109);padding:9px;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
+.stat{border:1px solid #2b3123;padding:6px;background:#0c0f09}
+.stat b{display:block;font-size:10px;color:#8d947e;letter-spacing:.5px}
+.stat i{font-style:normal;font-size:19px;font-weight:700;color:#dfe2d0}
+.stat .m{display:block;font-size:9.5px;color:#6d7461;margin-top:2px;line-height:1.25}
+.barwrap{height:26px;border:2px solid #3d4530;background:#080a06;margin:8px 0 12px;overflow:hidden}
+.bar{height:100%;transition:width 180ms ease,background 180ms ease;width:0}
+.bar.striped{width:100%;background:repeating-linear-gradient(45deg,#22261b 0 10px,#151810 10px 20px)}
+.c-red{background:#c04c3c}.c-muc{background:#cdbd3f}.c-gre{background:#a9c34b}
+.c-pur{background:#b46cf5;box-shadow:0 0 18px #b46cf5}
+button{font-family:inherit;font-size:12.5px;font-weight:700;background:#1b2013;color:#dfe2d0;border:2px solid #3d4530;padding:11px 13px;min-height:46px;cursor:pointer;transition:all 160ms;letter-spacing:.5px;text-transform:uppercase}
+button:hover:not(:disabled){background:#252b19;border-color:#a9c34b;color:#fff}
+button:disabled{opacity:.42;cursor:not-allowed}
+button.primary{background:#cdbd3f;color:#0a0c09;border-color:#e0d45c}
+button.primary:hover:not(:disabled){background:#e2d460;color:#000}
+button.ghost{background:transparent}
+.gate{border:2px dashed #cdbd3f;padding:12px;background:#12140c;margin-bottom:12px}
+.gate p{margin:0 0 10px;font-size:12.5px;color:#c8cba9}
+.row{display:flex;gap:8px}
+input[type=number]{flex:1;background:#080a06;border:2px solid #3d4530;color:#dfe2d0;font-family:inherit;font-size:18px;padding:9px;min-height:46px;width:100%}
+.selo{border:2px solid #a9c34b;background:#131a0c;padding:9px 11px;font-size:11.5px;color:#a9c34b;letter-spacing:.5px;margin-bottom:12px;line-height:1.5}
+.selo span{color:#7f8863;font-size:10.5px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
+nav button{min-height:44px;font-size:11px;padding:7px 3px}
+nav button.on{background:#a9c34b;color:#0a0c09;border-color:#c3dc63}
+.lvhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:18px 0 4px;border-bottom:1px dashed #3d4530;padding-bottom:5px}
+.lvhead h2{margin:0;font-family:Bitter,serif;font-size:13.5px;letter-spacing:1px;text-transform:uppercase;color:#dfe2d0}
+.lvhead .cnt{font-size:11px;color:#cdbd3f;margin-left:auto}
+.lvhead .mult{font-size:10.5px;color:#8d947e}
+.locked .lvhead h2{color:#6b725c}
+.lvt{margin:0 0 8px;font-size:10.5px;color:#6d7461;text-transform:uppercase;letter-spacing:.5px}
+.lockline{margin:0 0 10px;font-size:12px;color:#8d947e;border-left:3px solid #3d4530;padding-left:9px}
+.act{border:1px solid #2b3123;border-left:4px solid #3d4530;background:#11140e;padding:10px;margin-bottom:8px;display:grid;gap:6px}
+.act .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.act h3{margin:0;font-size:13.5px;letter-spacing:.3px}
+.pts{font-size:11.5px;color:#cdbd3f;white-space:nowrap;font-weight:700}
+.act p{margin:0;font-size:12px;color:#a9b098;line-height:1.45}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:10.5px;color:#8d947e}
+.act button{min-height:42px;font-size:11.5px;padding:8px}
+.card{border:2px solid #cdbd3f;background:#151709;padding:12px;margin-bottom:10px;box-shadow:inset 0 0 0 1px #000}
+.card.ach{border-color:#a9c34b;background:#121a0b}
+.card .ttl{font-family:Bitter,serif;font-weight:900;color:#cdbd3f;font-size:15px;letter-spacing:.5px;margin-bottom:6px;line-height:1.1}
+.card.ach .ttl{color:#a9c34b}
+.card p{margin:0 0 10px;font-size:12.5px;line-height:1.45}
+.achs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ach{border:1px solid #2b3123;padding:9px;background:#11140e;font-size:11px;line-height:1.4;color:#a9b098}
+.ach.sealed{color:#6f765f;border-style:dashed;background:#0d100a}
+.ach b{display:block;font-size:11.5px;margin-bottom:3px;color:#8d947e;letter-spacing:.5px}
+.ach.on{border-color:#a9c34b;background:#141a0d}
+.ach.on b{color:#a9c34b}
+.ach time{display:block;font-size:9.5px;color:#7c8368;margin-top:5px}
+.lost{font-size:11.5px;color:#8d947e;border:1px solid #2b3123;padding:8px;margin:10px 0}
+.big{width:100%;min-height:56px;font-size:14px}
+.hist{border-top:1px dashed #3d4530;margin-top:20px;padding-top:10px}
+.hist h4{margin:0 0 6px;font-size:10.5px;color:#8d947e;letter-spacing:1px;text-transform:uppercase}
+.hist li{font-size:11px;color:#8d947e;list-style:none;padding:3px 0;border-bottom:1px solid #1b1f15;display:flex;justify-content:space-between;gap:8px}
+.hist li b{color:#a9b098;font-weight:400}
+.hist ul{margin:0;padding:0}
+.vcard{margin-top:10px}
+.tiny{font-size:10px;color:#6d7461;margin-top:14px;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="app">
+<h1>PUNHETA<br>SEMANAL</h1>
+<div class="sub">um app pra uma coisa que você já fazia sem app</div>
+<div id="cards"></div>
+<div id="gate"></div>
+<div class="panel" id="panel"></div>
+<div class="barwrap"><div class="bar" id="bar"></div></div>
+<nav>
+<button data-t="acoes" id="t1">AÇÕES</button>
+<button data-t="verg" id="t2">VERGONHA</button>
+<button data-t="conq" id="t3">CONQUISTAS</button>
+</nav>
+<div id="view"></div>
+<div class="hist"><h4>histórico</h4><ul id="hist"></ul><div id="resetbox"></div></div>
+<div class="tiny">tudo dentro de casa. nada de rua, carro, trabalho ou viagem.<br>só você, quatro paredes e o que já estava sujo antes.</div>
+</div></div>
+<script>
+(function(){
+"use strict";
+const KEY='punheta_semanal_v1';
+const LEVELS=[null,
+{n:1,name:'Leve',mult:1,tag:'o único que você faz de olho fechado'},
+{n:2,name:'Sujo',mult:1.5,tag:'sujeira de fora, de terceiros, sua'},
+{n:3,name:'Nojento',mult:2,tag:'o cheiro já fica no ambiente'},
+{n:4,name:'Repugnante',mult:3,tag:'espalha em superfície da casa'},
+{n:5,name:'Vergonha Alheia',mult:3.5,tag:'tem testemunha dentro do imóvel'},
+{n:6,name:'Depravação',mult:5,tag:'acúmulo que sobrevive à semana'}];
+const A=[
+['1a1',1,'Punheta seca','Só a mão, sem nada. Não mancha lençol, não deixa cheiro, não suja nem a própria mão. Zero vestígio, e olhe lá.'],
+['1a2',1,'No banho','Água quente nas costas, resto de sabonete escorregando pelo pulso, o ralo engolindo tudo. Nem toalha suja você produz.'],
+['1a3',1,'Sentado na tampa do vaso','Toalha mofada no gancho, camisa nem sai da cintura. O azulejo frio na coxa e nenhuma gota no chão.'],
+['1a4',1,'De cueca, pro lado','Puxa o elástico, resolve, a cueca volta pro lugar. Nenhuma peça no chão e o algodão só um pouco morno.'],
+['1a5',1,'Cronometrada em 5 min','Cinco no relógio. Passou disso e é vexame, mas ninguém fica sabendo do ponteiro.'],
+['1a6',1,'Só aperto, sem terminar','Dez minutos de bomba e você para. Fica a sensação de dívida e a mão seca, sem uma gota de prova.'],
+['2a1',2,'Mão sem lavar','Você acabou de mexer no lixo. Pegou no pau assim, e o cheiro de casca de ovo fica no dedo até o almoço.'],
+['2a2',2,'Mão suada','Depois de arrumar a cama, axila grudenta, palma molhada de suor frio. Escorrega, e você continua com a mão melecada de sal.'],
+['2a3',2,'Cueca de ontem','A que ficou no chão desde ontem, com a marca amarelada seca e dura. Você veste de novo pra isso.'],
+['2a4',2,'Toalha úmida do banheiro','A mesma que todo mundo enxuga a cara. Morna, com cheiro de mofo de fundo de armário, e o pano fica dobrado com a sua marca.'],
+['2a5',2,'Pau melequento de mijo','Sem passar papel, direto da privada pra mão. O primeiro minuto é pegajoso, frio, e ainda pinga.'],
+['2a6',2,'Meia tirada do pé','Aquela que ficou doze horas no tênis. Você passa no pau e a meia esquenta, e o suor dela vira o lubrificante.'],
+['3a1',3,'Resto da vez anterior','A mão ainda melecada de ontem, porra seca entre os dedos puxando a pele. Você continua de onde parou, sem água.'],
+['3a2',3,'Porra no rosto','Goza na mão e esfrega na cara. Seca, repuxa a pele, deixa a boca grudada, e fica ali até o banho de amanhã.'],
+['3a3',3,'Azeite da cozinha','Sem lubrificante, o azeite da pia. Escorre pelo pulso e pela beirada da bancada, e a garrafa volta engordurada pro armário.'],
+['3a4',3,'Cheirar a mão e não lavar','Você cheira a porra no próprio dedo e segue o dia assim, pegando no controle, no celular, no pão.'],
+['3a5',3,'Gozar no peito e dormir','Deita, goza no próprio peito, dorme. A mancha amarela seca no lençol e fica pra outro dia, ou pra outro mês.'],
+['3a6',3,'Dedo na boca','Goza na mão, molha o dedo e chupa. Uma lambida só, o resto continua na palma, esfriando, com gosto de água parada.'],
+['4a1',4,'Gozar no chão do quarto','Direto no piso frio. A poça seca, vira mancha cinzenta, e fica ali até alguém reclamar do pé grudando.'],
+['4a2',4,'Em cima do notebook','Goza na tampa, espalha com a manga, fecha o computador. A dobradiça amanhece grudada e o teclado com risco de ranço.'],
+['4a3',4,'Deitado na cama sem toalha','O lençol absorve, você sente a umidade embaixo das costas e dorme em cima dela mesmo, no molhado.'],
+['4a4',4,'Gozar na meia e calçar','Goza dentro da meia, enfia o pé e vai viver. Fica molhada, esfria, endurece entre os dedos, e o calcanhar anda assim a tarde inteira.'],
+['4a5',4,'Colher da cozinha','Goza na colher, come, e devolve a colher no armário sem lavar. Alguém vai usar depois e não vai saber.'],
+['4a6',4,'No espelho sujo','Acerta o vidro, vê seu reflexo borrado por cima da mancha e deixa secando. Dedada de limpeza nunca vem.'],
+['5a1',5,'Porta do quarto aberta','Alguém passa no corredor e vê. Você não fecha. O ventilador batendo na porta e a vergonha acontecendo de propósito.'],
+['5a2',5,'Gente acordada em casa','TV ligada na sala, você abafa o gemido e a cadeira range. Quem tá lá sabe, e vai comentar no café.'],
+['5a3',5,'Câmera ligada na chamada','Microfone no mudo, câmera no seu rosto. Você se mexe devagar pra não entregar o queixo, e a tela fica tremendo.'],
+['5a4',5,'Cachorro ou gato lambendo','Goza no chão e o bicho vem lamber. Alguém da casa vê a cena, o focinho brilha, e você não levanta.'],
+['5a5',5,'Na cozinha com a família na sala','Em pé, encostado na pia, entre a louça suja. Se alguém entra pra pegar água, é o fim, e o cheiro fica no fogão.'],
+['5a6',5,'Lamber a mão na frente de alguém','Sem sair do lugar, olhando na cara, você limpa a mão com a boca. A pessoa espera você terminar de falar com a mão na boca.'],
+['6a1',6,'Lençol sem trocar a semana','Goza sempre no mesmo canto, camada sobre camada. A crosta tem relevo, cheiro de roupa guardada úmida, e você dorme nela.'],
+['6a2',6,'A mesma meia a semana toda','Goza na mesma meia de segunda a domingo e calça no sábado. Endurece no seu pé, o tecido vira placa, e você anda assim pela casa.'],
+['6a3',6,'Comer tudo da mão','Goza na mão e come inteiro, sem papel, sem água, sem enxaguar. O gosto fica no fundo da boca e você continua falando com os outros.'],
+['6a4',6,'Copo na geladeira','Goza num copo, guarda na porta da geladeira e bebe dois dias depois, gelado e talhado, com grumo escorrendo pelo bico.'],
+['6a5',6,'Gozar na cueca e dormir','Sem tirar, sem limpar. Acorda com ela endurecida, o algodão feito placa, e veste de novo por cima do corpo.'],
+['6a6',6,'Edging de três dias','Três dias segurando até o limite físico. No fim você goza em qualquer coisa que estiver na mão, inclusive na que não devia, e o volume respinga no chão.']]
+.map(x=>({id:x[0],lv:x[1],name:x[2],desc:x[3]}));
+const LOCK={2:'Quatro do nível 1. Quatro, querido.',3:'Quatro do nível 2. A essa altura você já devia estar sujo.',4:'Quatro do 3. Enquanto isso o nível 3 te espera, paciente.',5:'Quatro do 4. Vergonha de verdade começa depois daqui.',6:'Quatro do 5. E aí não tem mais volta, vida.'};
+const ACHS=[
+{id:'primeiro',name:'Estreia',desc:'Primeiro clique da vida. Levou quanto tempo pra achar um botão?',hint:'Comece por algum lugar, benzinho.'},
+{id:'primeiraMeta',name:'Meta Batida',desc:'Uma semana cumprida, aos trancos. O mínimo do mínimo, e você já se achando.',hint:'Uma semana inteira, sem errar a conta.'},
+{id:'streak3',name:'Três Dias',desc:'Três dias seguidos. Dá pra chamar de hábito se você for generoso.',hint:'Dias emendados, do jeito difícil.'},
+{id:'streak7',name:'Semana Inteira',desc:'Sete dias sem falhar. Uma vez. Não se acostuma, coração.',hint:'Sete. Contando com o domingo.'},
+{id:'lv2',name:'Saiu do Seco',desc:'Chegou no nível 2. Parabéns por encostar em sujeira, e olhe lá.',hint:'Saia do seco.'},
+{id:'lv3',name:'Grudou',desc:'Nível 3. Agora tem textura, e você ainda limpa a mão em qualquer pano.',hint:'Um degrau acima do suor.'},
+{id:'lv4',name:'Espalhou',desc:'Nível 4. Já tem mancha fixa em superfície da casa. Quem limpa nem sabe de onde veio.',hint:'Quando já tem mancha no chão.'},
+{id:'lv5',name:'Tem Testemunha',desc:'Nível 5. Alguém viu, ou quase. Você não morreu, vida.',hint:'Quando alguém da casa quase vê.'},
+{id:'lv6',name:'Fundo do Poço',desc:'Nível 6. Daqui pra baixo é só acúmulo. Bem-vindo ao relevo.',hint:'Fundo. Sem volta.'},
+{id:'mil',name:'Mil Pontos',desc:'Mil pontos acumulados na vida. Em quantas semanas, migo?',hint:'Quatro dígitos.'},
+{id:'cinco',name:'Cinco Mil',desc:'Cinco mil pontos. Uma planilha inteira de desleixo.',hint:'Cinco. Você não chega.'},
+{id:'transg3',name:'Três Transgressões',desc:'Três níveis invadidos na mesma semana. Você se empolgou, e foi feio.',hint:'Invada três vezes.'},
+{id:'l1full',name:'Seis de Seis',desc:'Fechou o nível 1 inteiro na semana. O básico, completo, finalmente.',hint:'O nível 1 inteiro. Os seis.'},
+{id:'sobra',name:'Cem de Sobra',desc:'Bateu a meta com 100 de sobra. Podia ter descansado, mas não.',hint:'Passe da meta com folga.'},
+{id:'cedo',name:'Antes das Oito',desc:'Repugnante antes das 8h. O dia nem começou e você já tinha sujado o quarto.',hint:'Cedo. Muito cedo.'},
+{id:'tarde',name:'Depois das Onze',desc:'Clicou depois das 23h. Era hora de dormir, e você ali, de pé.',hint:'Tarde. Bem tarde.'},
+{id:'vazio',name:'Semana Nada',desc:'Fechou a semana sem um clique. Nem o nível 1. Nem uma vez. Zero, e o app ainda teve que anotar.',hint:'Não faça nada por sete dias.'},
+{id:'tresSemanas',name:'Três Semanas',desc:'Meta batida três semanas seguidas. Ainda é pouco, mas já dá pra falar de constancinha.',hint:'Três semanas cumpridas, emendadas.'}];
+const POOL=[
+{id:'m1',t:'low',f:s=>'Faltam '+s.falta+' pontos, amor. Você tá aqui lendo em vez de resolver. Faz o mínimo.'},
+{id:'m2',t:'low',f:s=>s.dias+' dias restantes, '+s.pts+' pontos. A conta não fecha e você nem abriu a aba direito.'},
+{id:'m3',t:'low',f:s=>'Você precisa de um app pra lembrar de fazer isso. Um app, coração. Um.'},
+{id:'m4',t:'low',f:s=>'A barra tá aí, te olhando. Você finge que não viu, benzinho.'},
+{id:'m5',t:'low',c:s=>s.streak===0,f:s=>'Streak zero. Nem emendar dois dias você consegue, e ainda tem '+s.falta+' pontos.'},
+{id:'m6',t:'low',c:s=>s.weekClicks===0,f:s=>'Zero cliques essa semana. A barra tá intacta e você fingindo que não é com você.'},
+{id:'m7',t:'low',c:s=>s.weekClicks===0,f:s=>'Nem uma ação. Nem a punheta seca, que é de graça e não suja nada. '+s.dias+' dias e contando.'},
+{id:'m8',t:'low',c:s=>s.nivel<=1&&s.pts>0,f:s=>'Você ainda tá no nível 1. No primeiro. O único que dá pra fazer de olho fechado, vida.'},
+{id:'m9',t:'mid',f:s=>'Olha ela se esforçando. Tarde, mas se esforçando. Devia ter começado na segunda.'},
+{id:'m10',t:'mid',f:s=>s.streak+' dias de sequência. Pra quem não tem rotina, é quase impressionante. Quase.'},
+{id:'m11',t:'mid',f:s=>'Metade do caminho e ainda faltam '+s.falta+'. Sua resistência é uma piada, migo.'},
+{id:'m12',t:'mid',f:s=>s.pts+' pontos e você já tá ofegante. O nível 5 nem sabe que você existe.'},
+{id:'m13',t:'mid',f:s=>'Você fez '+s.weekClicks+' ações e acha que tá indo bem. Dá pra contar nos dedos, querido.'},
+{id:'m14',t:'mid',c:s=>s.nivel<=1,f:s=>'Nível 1 até agora. Você fez o básico e chamou de progresso.'},
+{id:'m15',t:'mid',f:s=>s.falta+' pontos. Dá pra fechar, se você parar de fingir que tem tempo, coração.'},
+{id:'m16',t:'high',f:s=>'Bateu a meta e ainda tá aqui. Não é dedicação, é falta do que fazer.'},
+{id:'m17',t:'high',f:s=>s.falta+' pontos pra terminar o que devia ter terminado na terça.'},
+{id:'m18',t:'high',f:s=>'Nível '+s.nivel+'. Agora ficou feio de verdade e você continua, benzinho.'},
+{id:'m19',t:'high',f:s=>'Cumpriu e vai começar tudo de novo segunda. Sozinho. Como sempre.'},
+{id:'m20',t:'ot',f:s=>'Overtime, '+s.pts+' pontos. Você continua porque não tem mais nada, e é isso.'},
+{id:'m21',t:'ot',f:s=>'Meta batida e '+s.extra+' de sobra. Ninguém pediu, ninguém viu. Só você e o relógio.'}];
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const dISO=(d=new Date())=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+function mondayOf(d){d=d||new Date();const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x;}
+function yest(){const d=new Date();d.setDate(d.getDate()-1);return dISO(d);}
+function daysLeft(){const t=new Date();t.setHours(0,0,0,0);const e=new Date(t);e.setDate(e.getDate()+(7-((t.getDay()+6)%7)));return Math.round((e-t)/864e5);}
+function fmt(iso){try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){return '--'}}
+const byId={};A.forEach(a=>byId[a.id]=a);
+function base(a){return Math.round(a.lv*10*LEVELS[a.lv].mult);}
+function fresh(){return{week:dISO(mondayOf()),goal:null,goalAt:null,pts:0,counts:{},clicks:[],lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,ach:{},lost:0,life:0,total:0,achStreak:0,pool:[]};}
+let Q=[],TOASTS=[],tab='acoes',resetStep=0,vcard='';
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return fresh();return Object.assign(fresh(),JSON.parse(r));}catch(e){return fresh();}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+let state=load();
+function unlock(s,id){if(s.ach[id])return false;s.ach[id]=new Date().toISOString();save();Q.push(id);return true;}
+function rollover(){
+const cur=dISO(mondayOf());
+if(state.week===cur)return;
+const old=state.week;
+const diff=Math.max(1,Math.round((mondayOf().getTime()-mondayOf(new Date(old+'T00:00:00')).getTime())/6048e5));
+if(!state.achieved)state.lost+=diff;
+const wc=state.clicks.filter(c=>c.d>=old).length;
+if(wc===0)unlock(state,'vazio');
+if(state.achieved){state.achStreak++;if(state.achStreak>=3)unlock(state,'tresSemanas');}else state.achStreak=0;
+Object.assign(state,{week:cur,goal:null,goalAt:null,pts:0,counts:{},lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,pool:[]});
+save();}
+rollover();
+if(state.lastDay&&state.lastDay!==dISO()&&state.lastDay!==yest())state.dayStreak=0;
+function doneCount(lv){let c=0;for(const a of A)if(a.lv===lv&&state.counts[a.id])c++;return c;}
+function unlocked(){let u=1;for(let l=1;l<=5;l++)if(doneCount(l)>=4)u=l+1;return u;}
+function weekClicks(){return state.clicks.filter(c=>c.d>=state.week).length;}
+function snap(){return{falta:Math.max(0,(state.goal||0)-state.pts),pts:state.pts,dias:daysLeft(),streak:state.dayStreak,weekClicks:weekClicks(),nivel:unlocked(),extra:state.pts-(state.goal||0)};}
+function checkAch(h){
+const s=state;
+if(s.total===1)unlock(s,'primeiro');
+if(s.achieved)unlock(s,'primeiraMeta');
+if(s.dayStreak>=3)unlock(s,'streak3');
+if(s.dayStreak>=7)unlock(s,'streak7');
+for(let l=2;l<=6;l++)if(s.maxLevel>=l)unlock(s,'lv'+l);
+if(s.life>=1000)unlock(s,'mil');
+if(s.life>=5000)unlock(s,'cinco');
+if(s.transg>=3)unlock(s,'transg3');
+if(doneCount(1)>=6)unlock(s,'l1full');
+if(s.achieved&&s.pts>=(s.goal||0)+100)unlock(s,'sobra');
+if(h<8&&h>=0&&s.maxLevel>=4&&s.counts[lastLv4])unlock(s,'cedo');
+if(h>=23)unlock(s,'tarde');
+}
+let lastLv4=null;
+function click(id){
+const s=state,a=byId[id],u=unlocked();
+if(!s.goal||a.lv>u)return;
+const h=new Date().getHours(),today=dISO();
+if(s.lastDay!==today){s.dayStreak=(s.lastDay===yest())?s.dayStreak+1:1;s.lastDay=today;}
+const ld=s.lvlDays[a.lv]||{n:0,last:null};
+if(ld.last===yest())ld.n++;else if(ld.last!==today)ld.n=1;
+ld.last=today;s.lvlDays[a.lv]=ld;
+let p=base(a)+Math.min(ld.n,5)*5;
+if(a.lv>s.maxLevel){s.transg++;p+=20;TOASTS.push({t:'VOCÊ SUBIU DE NÍVEL',b:'Nível '+a.lv+', '+LEVELS[a.lv].name+'. Ninguém esperava, nem você. +20 de transgressão e o nível anterior fica pra trás.'});}
+s.maxLevel=Math.max(s.maxLevel,a.lv);
+s.pts+=p;s.life+=p;s.total++;
+s.counts[id]=(s.counts[id]||0)+1;
+s.clicks.push({d:today,h:pad(new Date().getHours())+':'+pad(new Date().getMinutes()),n:a.name,p:p});
+if(s.clicks.length>300)s.clicks.shift();
+if(h<8&&a.lv===4)unlock(s,'cedo');
+if(h>=23)unlock(s,'tarde');
+checkAch(h);
+if(!s.achieved&&s.pts>=s.goal){s.achieved=true;s.ot=true;TOASTS.push({t:'PARABÉNS, VOCÊ CONSEGUIU O MÍNIMO',b:s.pts+' pontos numa meta de '+s.goal+'. O mínimo de alguém que não tem mais nada acontecendo. Overtime liberado, e não é elogio.'});}
+save();render();
+}
+function pick(){
+const s=state,sn=snap();let cands;
+if(s.ot)cands=POOL.filter(p=>p.t==='ot');
+else{const pct=s.goal?Math.min(100,s.pts/s.goal*100):0;const tier=pct<=40?'low':pct<=80?'mid':'high';
+cands=POOL.filter(p=>p.t===tier&&(!p.c||p.c(sn)));}
+if(!cands.length)cands=POOL.filter(p=>p.t==='low');
+let av=cands.filter(p=>s.pool.indexOf(p.id)<0);
+if(!av.length){s.pool=s.pool.filter(i=>!cands.some(c=>c.id===i));av=cands;}
+const p=av[Math.floor(Math.random()*av.length)];
+s.pool.push(p.id);save();
+return p.f(sn);}
+function render(){
+const s=state,u=unlocked();
+const pct=s.goal?Math.min(100,s.pts/s.goal*100):0;
+let cards='';
+TOASTS.forEach(c=>{cards+='<div class="card"><div class="ttl">'+c.t+'</div><p>'+c.b+'</p><button>ACEITAR CALADO</button></div>';});
+TOASTS=[];
+Q.forEach(id=>{const a=ACHS.find(x=>x.id===id);if(!a)return;cards+='<div class="card ach"><div class="ttl">CONQUISTA: '+a.name+'</div><p>'+a.desc+'</p><button>ACEITAR CALADO</button></div>';});
+Q=[];
+$('#cards').innerHTML=cards;
+$('#cards').querySelectorAll('button').forEach(b=>b.onclick=()=>b.parentNode.remove());
+$('#gate').innerHTML=s.goal
+?'<div class="selo">META FECHADA · '+fmt(s.goalAt)+' · '+s.goal+' PONTOS<br><span>pediu isso, agora aguenta</span></div>'
+:'<div class="gate"><p>Definir a meta é a parte fácil, e você já tá demorando. Escolhe um número de 100 a 1000 e fecha. Depois não tem ajuste, não tem segunda chance, não tem desculpa.</p><div class="row"><input id="gin" type="number" min="100" max="1000" value="300" aria-label="meta semanal em pontos"><button class="primary" id="gbtn">FECHAR A META</button></div></div>';
+const gb=$('#gbtn');
+if(gb)gb.onclick=()=>{let v=parseInt($('#gin').value,10);if(isNaN(v))v=300;v=Math.max(100,Math.min(1000,v));s.goal=v;s.goalAt=new Date().toISOString();save();render();};
+const S=[['META',s.goal||'--','a que você mesmo pediu'],['PONTOS','<span aria-live="polite">'+s.pts+'</span>','contando migalha'],['%',Math.round(pct)+'%','do combinado'],['DIAS',daysLeft(),'e você parado'],['STREAK',s.dayStreak,'dias seguidos, olhe lá'],['NÍVEL',u+'/6','até onde aguentou']];
+$('#panel').innerHTML=S.map(x=>'<div class="stat"><b>'+x[0]+'</b><i>'+x[1]+'</i><span class="m">'+x[2]+'</span></div>').join('');
+const bar=$('#bar');
+if(!s.goal){bar.className='bar striped';bar.style.width='100%';}
+else{bar.className='bar '+(pct<=33?'c-red':pct<=66?'c-muc':pct<100?'c-gre':'c-pur');bar.style.width=pct+'%';}
+$('#t1').classList.toggle('on',tab==='acoes');
+$('#t2').classList.toggle('on',tab==='verg');
+$('#t3').classList.toggle('on',tab==='conq');
+let v='';
+if(tab==='acoes'){
+ for(let lv=1;lv<=6;lv++){
+  const d=doneCount(lv),locked=lv>u;
+  v+='<section class="'+(locked?'locked':'')+'"><div class="lvhead"><h2>'+lv+'. '+LEVELS[lv].name+(locked?' · CADEADO':'')+'</h2><span class="mult">'+LEVELS[lv].mult+'x</span><span class="cnt">'+d+'/6</span></div><p class="lvt">'+LEVELS[lv].tag+'</p>';
+  if(locked){v+='<p class="lockline">Faltam '+Math.max(0,4-doneCount(lv-1))+' ações do nível '+(lv-1)+'. '+LOCK[lv]+'</p>';}
+  else{
+   v+=A.filter(a=>a.lv===lv).map(a=>{const c=s.counts[a.id]||0;
+    return '<div class="act"><div class="top"><h3>'+a.name+'</h3><span class="pts">'+base(a)+' pts</span></div><p>'+a.desc+'</p><div class="meta"><span>cumprida '+c+'x</span><button data-a="'+a.id+'"'+(!s.goal?' disabled':'')+'>+ CUMPRI</button></div></div>';}).join('');
+  }
+  v+='</section>';
+ }
+}
+if(tab==='verg'){
+ v+='<button class="primary big" id="verg">PEDIR VERGONHA</button><div class="vcard" id="vcard">'+vcard+'</div>';
+}
+if(tab==='conq'){
+ const got=Object.keys(s.ach).length;
+ v+='<p class="lvt">'+got+'/18 reveladas · nenhuma anunciada antes da hora</p><div class="achs">';
+ v+=ACHS.map(a=>{const g=s.ach[a.id];
+  return g?'<div class="ach on"><b>'+a.name+'</b>'+a.desc+'<time>'+fmt(g)+'</time></div>':'<div class="ach sealed"><b>???</b>'+a.hint+'</div>';}).join('');
+ v+='</div><p class="lost">'+s.lost+' semanas fechadas sem bater a meta. Esse número só sobe.</p>';
+}
+$('#view').innerHTML=v;
+const vb=$('#verg');
+if(vb)vb.onclick=()=>{vcard='<div class="card"><div class="ttl">VERGONHA</div><p>'+pick()+'</p><button id="acc">ACEITAR CALADO</button></div>';$('#vcard').innerHTML=vcard;$('#acc').onclick=()=>{vcard='';$('#vcard').innerHTML='';};};
+$('#view').querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>click(b.dataset.a));
+const h=$('#hist'),last=s.clicks.slice(-10).reverse();
+h.innerHTML=last.length?last.map(c=>'<li><b>'+c.n+'</b><span>'+c.h+' · +'+c.p+'</span></li>').join(''):'<li><b>nada registrado. como sempre.</b></li>';
+$('#resetbox').innerHTML=resetStep===0
+?'<button class="ghost" id="rst" style="margin-top:10px;width:100%">ZERAR SEMANA</button>'
+:'<div class="card" style="margin-top:10px"><p>tem certeza mesmo? o estrago já foi feito, os pontos já foram. A meta não volta e as conquistas ficam.</p><div class="row"><button class="primary" id="rty">ZEREI, SIM</button><button id="rtn">DEIXA</button></div></div>';
+if($('#rst'))$('#rst').onclick=()=>{resetStep=1;render();};
+if($('#rtn'))$('#rtn').onclick=()=>{resetStep=0;render();};
+if($('#rty'))$('#rty').onclick=()=>{resetStep=0;Object.assign(state,{pts:0,counts:{},lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,pool:[]});vcard='';save();render();};
+}
+$('#t1').onclick=()=>{tab='acoes';render();};
+$('#t2').onclick=()=>{tab='verg';render();};
+$('#t3').onclick=()=>{tab='conq';render();};
+render();
+})();
+</script>
+</body>
+  </html>
