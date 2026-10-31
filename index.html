@@ -1,338 +1,413 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a0c09">
-<title>PUNHETA SEMANAL</title>
+<title>O JOGO</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bitter:wght@800;900&display=swap');
-:root{
---bg:#0a0c09;--panel:#11140e;--panel2:#161a11;--ink:#dfe2d0;--dim:#8d947e;
---green:#a9c34b;--mucus:#cdbd3f;--red:#c04c3c;--purple:#b46cf5;--line:#2b3123;--line2:#3d4530;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#0a0c09;color:#dfe2d0}
-#wrap{min-height:100vh;background-color:#0a0c09;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
-background-blend-mode:overlay;font-family:'Space Mono',ui-monospace,monospace;font-size:15px;line-height:1.5;color:#dfe2d0}
-#app{max-width:700px;margin:0 auto;padding:16px 14px 70px}
-h1{font-family:Bitter,Georgia,serif;font-weight:900;font-size:clamp(26px,8vw,44px);line-height:.95;letter-spacing:-1px;margin:0 0 4px;color:#cdbd3f;text-shadow:0 0 18px rgba(205,189,63,.22),1px 1px 0 #000;filter:blur(.25px)}
-.sub{color:#8d947e;font-size:12px;margin-bottom:14px}
-.panel{border:2px solid #3d4530;background:linear-gradient(180deg,#141810,#0e1109);padding:9px;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
-.stat{border:1px solid #2b3123;padding:6px;background:#0c0f09}
-.stat b{display:block;font-size:10px;color:#8d947e;letter-spacing:.5px}
-.stat i{font-style:normal;font-size:19px;font-weight:700;color:#dfe2d0}
-.stat .m{display:block;font-size:9.5px;color:#6d7461;margin-top:2px;line-height:1.25}
-.barwrap{height:26px;border:2px solid #3d4530;background:#080a06;margin:8px 0 12px;overflow:hidden}
-.bar{height:100%;transition:width 180ms ease,background 180ms ease;width:0}
-.bar.striped{width:100%;background:repeating-linear-gradient(45deg,#22261b 0 10px,#151810 10px 20px)}
-.c-red{background:#c04c3c}.c-muc{background:#cdbd3f}.c-gre{background:#a9c34b}
-.c-pur{background:#b46cf5;box-shadow:0 0 18px #b46cf5}
-button{font-family:inherit;font-size:12.5px;font-weight:700;background:#1b2013;color:#dfe2d0;border:2px solid #3d4530;padding:11px 13px;min-height:46px;cursor:pointer;transition:all 160ms;letter-spacing:.5px;text-transform:uppercase}
-button:hover:not(:disabled){background:#252b19;border-color:#a9c34b;color:#fff}
-button:disabled{opacity:.42;cursor:not-allowed}
-button.primary{background:#cdbd3f;color:#0a0c09;border-color:#e0d45c}
-button.primary:hover:not(:disabled){background:#e2d460;color:#000}
-button.ghost{background:transparent}
-.gate{border:2px dashed #cdbd3f;padding:12px;background:#12140c;margin-bottom:12px}
-.gate p{margin:0 0 10px;font-size:12.5px;color:#c8cba9}
-.row{display:flex;gap:8px}
-input[type=number]{flex:1;background:#080a06;border:2px solid #3d4530;color:#dfe2d0;font-family:inherit;font-size:18px;padding:9px;min-height:46px;width:100%}
-.selo{border:2px solid #a9c34b;background:#131a0c;padding:9px 11px;font-size:11.5px;color:#a9c34b;letter-spacing:.5px;margin-bottom:12px;line-height:1.5}
-.selo span{color:#7f8863;font-size:10.5px}
-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
-nav button{min-height:44px;font-size:11px;padding:7px 3px}
-nav button.on{background:#a9c34b;color:#0a0c09;border-color:#c3dc63}
-.lvhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:18px 0 4px;border-bottom:1px dashed #3d4530;padding-bottom:5px}
-.lvhead h2{margin:0;font-family:Bitter,serif;font-size:13.5px;letter-spacing:1px;text-transform:uppercase;color:#dfe2d0}
-.lvhead .cnt{font-size:11px;color:#cdbd3f;margin-left:auto}
-.lvhead .mult{font-size:10.5px;color:#8d947e}
-.locked .lvhead h2{color:#6b725c}
-.lvt{margin:0 0 8px;font-size:10.5px;color:#6d7461;text-transform:uppercase;letter-spacing:.5px}
-.lockline{margin:0 0 10px;font-size:12px;color:#8d947e;border-left:3px solid #3d4530;padding-left:9px}
-.act{border:1px solid #2b3123;border-left:4px solid #3d4530;background:#11140e;padding:10px;margin-bottom:8px;display:grid;gap:6px}
-.act .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.act h3{margin:0;font-size:13.5px;letter-spacing:.3px}
-.pts{font-size:11.5px;color:#cdbd3f;white-space:nowrap;font-weight:700}
-.act p{margin:0;font-size:12px;color:#a9b098;line-height:1.45}
-.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:10.5px;color:#8d947e}
-.act button{min-height:42px;font-size:11.5px;padding:8px}
-.card{border:2px solid #cdbd3f;background:#151709;padding:12px;margin-bottom:10px;box-shadow:inset 0 0 0 1px #000}
-.card.ach{border-color:#a9c34b;background:#121a0b}
-.card .ttl{font-family:Bitter,serif;font-weight:900;color:#cdbd3f;font-size:15px;letter-spacing:.5px;margin-bottom:6px;line-height:1.1}
-.card.ach .ttl{color:#a9c34b}
-.card p{margin:0 0 10px;font-size:12.5px;line-height:1.45}
-.achs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.ach{border:1px solid #2b3123;padding:9px;background:#11140e;font-size:11px;line-height:1.4;color:#a9b098}
-.ach.sealed{color:#6f765f;border-style:dashed;background:#0d100a}
-.ach b{display:block;font-size:11.5px;margin-bottom:3px;color:#8d947e;letter-spacing:.5px}
-.ach.on{border-color:#a9c34b;background:#141a0d}
-.ach.on b{color:#a9c34b}
-.ach time{display:block;font-size:9.5px;color:#7c8368;margin-top:5px}
-.lost{font-size:11.5px;color:#8d947e;border:1px solid #2b3123;padding:8px;margin:10px 0}
-.big{width:100%;min-height:56px;font-size:14px}
-.hist{border-top:1px dashed #3d4530;margin-top:20px;padding-top:10px}
-.hist h4{margin:0 0 6px;font-size:10.5px;color:#8d947e;letter-spacing:1px;text-transform:uppercase}
-.hist li{font-size:11px;color:#8d947e;list-style:none;padding:3px 0;border-bottom:1px solid #1b1f15;display:flex;justify-content:space-between;gap:8px}
-.hist li b{color:#a9b098;font-weight:400}
-.hist ul{margin:0;padding:0}
-.vcard{margin-top:10px}
-.tiny{font-size:10px;color:#6d7461;margin-top:14px;text-align:center;line-height:1.6}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:#000;padding:18px 10px}
+  body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+  #app{
+    --bg:#050604; --panel:#0b0f08; --panel2:#111a0c; --line:#22301a;
+    --green:#b7ff5c; --green-d:#79a83c; --yellow:#ffd93d; --text:#eafad9; --muted:#7d9070;
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    border:1px solid var(--line); border-radius:16px;
+    padding:14px 16px 22px; width:100%; max-width:700px;
+    font-size:14px; line-height:1.45;
+  }
+  header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .brand{font-size:18px;font-weight:500;letter-spacing:.14em}
+  .brand b{color:var(--green)}
+  .brand i{color:var(--yellow);font-style:normal}
+  .streak{display:flex;align-items:center;gap:7px;border:1px solid var(--yellow);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--yellow);font-weight:500}
+  .streak b{font-size:14px}
+  nav{display:flex;gap:6px;margin:12px 0 14px}
+  nav button{flex:1;background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 6px;border-radius:10px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s;font-weight:500}
+  nav button:hover{border-color:var(--green-d);color:var(--text)}
+  nav button.on{background:var(--green);border-color:var(--green);color:#050604;font-weight:500}
+  h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 10px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:11px}
+  .row{display:flex;align-items:center;gap:8px}
+  .between{justify-content:space-between}
+  .small{font-size:11.5px;color:var(--muted)}
+  .yellow{color:var(--yellow)}
+  .green{color:var(--green)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:11px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 10px;text-align:center}
+  .stat .v{font-size:24px;font-weight:500;line-height:1.1}
+  .stat .l{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .goal-num{font-size:30px;font-weight:500;margin:6px 0 8px;letter-spacing:-.01em}
+  .goal-num span{color:var(--muted);font-size:20px}
+  .bar{height:9px;background:#141d0e;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-bottom:8px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green-d),var(--green));transition:width .4s}
+  .bar.full i{background:var(--yellow)}
+  .tag{border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:2px 7px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+  .tag.lock{border-color:var(--yellow);color:var(--yellow)}
+  input[type=number]{background:#0e1409;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 11px;font-size:14px;font-family:inherit;width:100%;outline:none}
+  input[type=number]:focus{border-color:var(--green)}
+  .presets{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}
+  .presets button{background:#0e1409;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 12px;font-size:12.5px;cursor:pointer;font-family:inherit}
+  .presets button:hover{border-color:var(--green);color:var(--green)}
+  .presets button.sel{background:var(--green);color:#050604;border-color:var(--green);font-weight:500}
+  .btn{width:100%;background:var(--green);color:#050604;border:none;border-radius:9px;padding:11px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:inherit;letter-spacing:.02em}
+  .btn:hover{background:#c9ff85}
+  .btn:disabled{background:#1b2413;color:#5d6b52;cursor:not-allowed}
+  .divhead{display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .divhead .nm{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+  .divhead .nm b{color:var(--yellow)}
+  .divhead .pg{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .divhead.locked .nm{color:#5d6b52}
+  .action{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px;color:var(--text);cursor:pointer;font-family:inherit;font-size:13px;transition:.12s}
+  .action:hover:not(:disabled){border-color:var(--green);background:var(--panel2)}
+  .action:disabled{opacity:.4;cursor:not-allowed}
+  .action .pts{color:var(--yellow);font-size:12px;font-weight:500;white-space:nowrap;border:1px solid #3a3413;background:#1a1706;border-radius:6px;padding:3px 8px}
+  .action .done{color:var(--green);font-size:10.5px;border:1px solid #2c4019;border-radius:5px;padding:1px 5px;margin-left:6px}
+  .lockmsg{background:#141a0a;border:1px dashed var(--yellow);color:var(--yellow);border-radius:10px;padding:10px 12px;font-size:12.5px;margin-bottom:12px}
+  .ach{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px}
+  .ach.un{border-color:var(--green);background:#0f1708}
+  .ach .ico{width:30px;height:30px;flex:0 0 30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;background:#151d0e;color:#4d5c42;border:1px solid var(--line)}
+  .ach.un .ico{background:var(--green);color:#050604;border-color:var(--green)}
+  .ach .t{font-size:12.8px;font-weight:500}
+  .ach .d{font-size:11.5px;color:var(--muted)}
+  .ach.un .t{color:var(--green)}
+  .log{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--green-d);border-radius:8px;padding:8px 11px;margin-bottom:5px}
+  .log .when{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .log .what{font-size:12.5px;margin-top:2px}
+  .log .pt{color:var(--yellow);font-size:12px;font-weight:500;white-space:nowrap}
+  #toasts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .toast{border-radius:9px;padding:9px 12px;font-size:12.5px;border:1px solid var(--green);background:#111c08;color:var(--green);animation:in .25s ease}
+  .toast.y{border-color:var(--yellow);background:#1a1706;color:var(--yellow)}
+  .toast.err{border-color:#ff7a5c;background:#1c0f0a;color:#ff9b82}
+  @keyframes in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .empty{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 10px}
+  footer{margin-top:16px;text-align:center}
+  footer button{background:none;border:none;color:#4d5c42;font-size:11px;cursor:pointer;font-family:inherit;text-decoration:underline}
+  .mult{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+  .mult b{color:var(--yellow)}
 </style>
 </head>
 <body>
-<div id="wrap"><div id="app">
-<h1>PUNHETA<br>SEMANAL</h1>
-<div class="sub">um app pra uma coisa que você já fazia sem app</div>
-<div id="cards"></div>
-<div id="gate"></div>
-<div class="panel" id="panel"></div>
-<div class="barwrap"><div class="bar" id="bar"></div></div>
-<nav>
-<button data-t="acoes" id="t1">AÇÕES</button>
-<button data-t="verg" id="t2">VERGONHA</button>
-<button data-t="conq" id="t3">CONQUISTAS</button>
-</nav>
-<div id="view"></div>
-<div class="hist"><h4>histórico</h4><ul id="hist"></ul><div id="resetbox"></div></div>
-<div class="tiny">tudo dentro de casa. nada de rua, carro, trabalho ou viagem.<br>só você, quatro paredes e o que já estava sujo antes.</div>
-</div></div>
+<div id="app">
+  <header>
+    <div class="brand">O <b>JOGO</b><i>_</i></div>
+    <div class="streak">SEQUÊNCIA <b id="stk">0</b> d</div>
+  </header>
+
+  <nav>
+    <button data-tab="home" class="on">Início</button>
+    <button data-tab="acts">Ações</button>
+    <button data-tab="hist">Histórico</button>
+    <button data-tab="ach">Conquistas</button>
+  </nav>
+
+  <div id="toasts"></div>
+  <main id="main"></main>
+
+  <footer><button id="reset">apagar todo o progresso</button></footer>
+</div>
+
 <script>
 (function(){
-"use strict";
-const KEY='punheta_semanal_v1';
-const LEVELS=[null,
-{n:1,name:'Leve',mult:1,tag:'o único que você faz de olho fechado'},
-{n:2,name:'Sujo',mult:1.5,tag:'sujeira de fora, de terceiros, sua'},
-{n:3,name:'Nojento',mult:2,tag:'o cheiro já fica no ambiente'},
-{n:4,name:'Repugnante',mult:3,tag:'espalha em superfície da casa'},
-{n:5,name:'Vergonha Alheia',mult:3.5,tag:'tem testemunha dentro do imóvel'},
-{n:6,name:'Depravação',mult:5,tag:'acúmulo que sobrevive à semana'}];
-const A=[
-['1a1',1,'Punheta seca','Só a mão, sem nada. Não mancha lençol, não deixa cheiro, não suja nem a própria mão. Zero vestígio, e olhe lá.'],
-['1a2',1,'No banho','Água quente nas costas, resto de sabonete escorregando pelo pulso, o ralo engolindo tudo. Nem toalha suja você produz.'],
-['1a3',1,'Sentado na tampa do vaso','Toalha mofada no gancho, camisa nem sai da cintura. O azulejo frio na coxa e nenhuma gota no chão.'],
-['1a4',1,'De cueca, pro lado','Puxa o elástico, resolve, a cueca volta pro lugar. Nenhuma peça no chão e o algodão só um pouco morno.'],
-['1a5',1,'Cronometrada em 5 min','Cinco no relógio. Passou disso e é vexame, mas ninguém fica sabendo do ponteiro.'],
-['1a6',1,'Só aperto, sem terminar','Dez minutos de bomba e você para. Fica a sensação de dívida e a mão seca, sem uma gota de prova.'],
-['2a1',2,'Mão sem lavar','Você acabou de mexer no lixo. Pegou no pau assim, e o cheiro de casca de ovo fica no dedo até o almoço.'],
-['2a2',2,'Mão suada','Depois de arrumar a cama, axila grudenta, palma molhada de suor frio. Escorrega, e você continua com a mão melecada de sal.'],
-['2a3',2,'Cueca de ontem','A que ficou no chão desde ontem, com a marca amarelada seca e dura. Você veste de novo pra isso.'],
-['2a4',2,'Toalha úmida do banheiro','A mesma que todo mundo enxuga a cara. Morna, com cheiro de mofo de fundo de armário, e o pano fica dobrado com a sua marca.'],
-['2a5',2,'Pau melequento de mijo','Sem passar papel, direto da privada pra mão. O primeiro minuto é pegajoso, frio, e ainda pinga.'],
-['2a6',2,'Meia tirada do pé','Aquela que ficou doze horas no tênis. Você passa no pau e a meia esquenta, e o suor dela vira o lubrificante.'],
-['3a1',3,'Resto da vez anterior','A mão ainda melecada de ontem, porra seca entre os dedos puxando a pele. Você continua de onde parou, sem água.'],
-['3a2',3,'Porra no rosto','Goza na mão e esfrega na cara. Seca, repuxa a pele, deixa a boca grudada, e fica ali até o banho de amanhã.'],
-['3a3',3,'Azeite da cozinha','Sem lubrificante, o azeite da pia. Escorre pelo pulso e pela beirada da bancada, e a garrafa volta engordurada pro armário.'],
-['3a4',3,'Cheirar a mão e não lavar','Você cheira a porra no próprio dedo e segue o dia assim, pegando no controle, no celular, no pão.'],
-['3a5',3,'Gozar no peito e dormir','Deita, goza no próprio peito, dorme. A mancha amarela seca no lençol e fica pra outro dia, ou pra outro mês.'],
-['3a6',3,'Dedo na boca','Goza na mão, molha o dedo e chupa. Uma lambida só, o resto continua na palma, esfriando, com gosto de água parada.'],
-['4a1',4,'Gozar no chão do quarto','Direto no piso frio. A poça seca, vira mancha cinzenta, e fica ali até alguém reclamar do pé grudando.'],
-['4a2',4,'Em cima do notebook','Goza na tampa, espalha com a manga, fecha o computador. A dobradiça amanhece grudada e o teclado com risco de ranço.'],
-['4a3',4,'Deitado na cama sem toalha','O lençol absorve, você sente a umidade embaixo das costas e dorme em cima dela mesmo, no molhado.'],
-['4a4',4,'Gozar na meia e calçar','Goza dentro da meia, enfia o pé e vai viver. Fica molhada, esfria, endurece entre os dedos, e o calcanhar anda assim a tarde inteira.'],
-['4a5',4,'Colher da cozinha','Goza na colher, come, e devolve a colher no armário sem lavar. Alguém vai usar depois e não vai saber.'],
-['4a6',4,'No espelho sujo','Acerta o vidro, vê seu reflexo borrado por cima da mancha e deixa secando. Dedada de limpeza nunca vem.'],
-['5a1',5,'Porta do quarto aberta','Alguém passa no corredor e vê. Você não fecha. O ventilador batendo na porta e a vergonha acontecendo de propósito.'],
-['5a2',5,'Gente acordada em casa','TV ligada na sala, você abafa o gemido e a cadeira range. Quem tá lá sabe, e vai comentar no café.'],
-['5a3',5,'Câmera ligada na chamada','Microfone no mudo, câmera no seu rosto. Você se mexe devagar pra não entregar o queixo, e a tela fica tremendo.'],
-['5a4',5,'Cachorro ou gato lambendo','Goza no chão e o bicho vem lamber. Alguém da casa vê a cena, o focinho brilha, e você não levanta.'],
-['5a5',5,'Na cozinha com a família na sala','Em pé, encostado na pia, entre a louça suja. Se alguém entra pra pegar água, é o fim, e o cheiro fica no fogão.'],
-['5a6',5,'Lamber a mão na frente de alguém','Sem sair do lugar, olhando na cara, você limpa a mão com a boca. A pessoa espera você terminar de falar com a mão na boca.'],
-['6a1',6,'Lençol sem trocar a semana','Goza sempre no mesmo canto, camada sobre camada. A crosta tem relevo, cheiro de roupa guardada úmida, e você dorme nela.'],
-['6a2',6,'A mesma meia a semana toda','Goza na mesma meia de segunda a domingo e calça no sábado. Endurece no seu pé, o tecido vira placa, e você anda assim pela casa.'],
-['6a3',6,'Comer tudo da mão','Goza na mão e come inteiro, sem papel, sem água, sem enxaguar. O gosto fica no fundo da boca e você continua falando com os outros.'],
-['6a4',6,'Copo na geladeira','Goza num copo, guarda na porta da geladeira e bebe dois dias depois, gelado e talhado, com grumo escorrendo pelo bico.'],
-['6a5',6,'Gozar na cueca e dormir','Sem tirar, sem limpar. Acorda com ela endurecida, o algodão feito placa, e veste de novo por cima do corpo.'],
-['6a6',6,'Edging de três dias','Três dias segurando até o limite físico. No fim você goza em qualquer coisa que estiver na mão, inclusive na que não devia, e o volume respinga no chão.']]
-.map(x=>({id:x[0],lv:x[1],name:x[2],desc:x[3]}));
-const LOCK={2:'Quatro do nível 1. Quatro, querido.',3:'Quatro do nível 2. A essa altura você já devia estar sujo.',4:'Quatro do 3. Enquanto isso o nível 3 te espera, paciente.',5:'Quatro do 4. Vergonha de verdade começa depois daqui.',6:'Quatro do 5. E aí não tem mais volta, vida.'};
-const ACHS=[
-{id:'primeiro',name:'Estreia',desc:'Primeiro clique da vida. Levou quanto tempo pra achar um botão?',hint:'Comece por algum lugar, benzinho.'},
-{id:'primeiraMeta',name:'Meta Batida',desc:'Uma semana cumprida, aos trancos. O mínimo do mínimo, e você já se achando.',hint:'Uma semana inteira, sem errar a conta.'},
-{id:'streak3',name:'Três Dias',desc:'Três dias seguidos. Dá pra chamar de hábito se você for generoso.',hint:'Dias emendados, do jeito difícil.'},
-{id:'streak7',name:'Semana Inteira',desc:'Sete dias sem falhar. Uma vez. Não se acostuma, coração.',hint:'Sete. Contando com o domingo.'},
-{id:'lv2',name:'Saiu do Seco',desc:'Chegou no nível 2. Parabéns por encostar em sujeira, e olhe lá.',hint:'Saia do seco.'},
-{id:'lv3',name:'Grudou',desc:'Nível 3. Agora tem textura, e você ainda limpa a mão em qualquer pano.',hint:'Um degrau acima do suor.'},
-{id:'lv4',name:'Espalhou',desc:'Nível 4. Já tem mancha fixa em superfície da casa. Quem limpa nem sabe de onde veio.',hint:'Quando já tem mancha no chão.'},
-{id:'lv5',name:'Tem Testemunha',desc:'Nível 5. Alguém viu, ou quase. Você não morreu, vida.',hint:'Quando alguém da casa quase vê.'},
-{id:'lv6',name:'Fundo do Poço',desc:'Nível 6. Daqui pra baixo é só acúmulo. Bem-vindo ao relevo.',hint:'Fundo. Sem volta.'},
-{id:'mil',name:'Mil Pontos',desc:'Mil pontos acumulados na vida. Em quantas semanas, migo?',hint:'Quatro dígitos.'},
-{id:'cinco',name:'Cinco Mil',desc:'Cinco mil pontos. Uma planilha inteira de desleixo.',hint:'Cinco. Você não chega.'},
-{id:'transg3',name:'Três Transgressões',desc:'Três níveis invadidos na mesma semana. Você se empolgou, e foi feio.',hint:'Invada três vezes.'},
-{id:'l1full',name:'Seis de Seis',desc:'Fechou o nível 1 inteiro na semana. O básico, completo, finalmente.',hint:'O nível 1 inteiro. Os seis.'},
-{id:'sobra',name:'Cem de Sobra',desc:'Bateu a meta com 100 de sobra. Podia ter descansado, mas não.',hint:'Passe da meta com folga.'},
-{id:'cedo',name:'Antes das Oito',desc:'Repugnante antes das 8h. O dia nem começou e você já tinha sujado o quarto.',hint:'Cedo. Muito cedo.'},
-{id:'tarde',name:'Depois das Onze',desc:'Clicou depois das 23h. Era hora de dormir, e você ali, de pé.',hint:'Tarde. Bem tarde.'},
-{id:'vazio',name:'Semana Nada',desc:'Fechou a semana sem um clique. Nem o nível 1. Nem uma vez. Zero, e o app ainda teve que anotar.',hint:'Não faça nada por sete dias.'},
-{id:'tresSemanas',name:'Três Semanas',desc:'Meta batida três semanas seguidas. Ainda é pouco, mas já dá pra falar de constancinha.',hint:'Três semanas cumpridas, emendadas.'}];
-const POOL=[
-{id:'m1',t:'low',f:s=>'Faltam '+s.falta+' pontos, amor. Você tá aqui lendo em vez de resolver. Faz o mínimo.'},
-{id:'m2',t:'low',f:s=>s.dias+' dias restantes, '+s.pts+' pontos. A conta não fecha e você nem abriu a aba direito.'},
-{id:'m3',t:'low',f:s=>'Você precisa de um app pra lembrar de fazer isso. Um app, coração. Um.'},
-{id:'m4',t:'low',f:s=>'A barra tá aí, te olhando. Você finge que não viu, benzinho.'},
-{id:'m5',t:'low',c:s=>s.streak===0,f:s=>'Streak zero. Nem emendar dois dias você consegue, e ainda tem '+s.falta+' pontos.'},
-{id:'m6',t:'low',c:s=>s.weekClicks===0,f:s=>'Zero cliques essa semana. A barra tá intacta e você fingindo que não é com você.'},
-{id:'m7',t:'low',c:s=>s.weekClicks===0,f:s=>'Nem uma ação. Nem a punheta seca, que é de graça e não suja nada. '+s.dias+' dias e contando.'},
-{id:'m8',t:'low',c:s=>s.nivel<=1&&s.pts>0,f:s=>'Você ainda tá no nível 1. No primeiro. O único que dá pra fazer de olho fechado, vida.'},
-{id:'m9',t:'mid',f:s=>'Olha ela se esforçando. Tarde, mas se esforçando. Devia ter começado na segunda.'},
-{id:'m10',t:'mid',f:s=>s.streak+' dias de sequência. Pra quem não tem rotina, é quase impressionante. Quase.'},
-{id:'m11',t:'mid',f:s=>'Metade do caminho e ainda faltam '+s.falta+'. Sua resistência é uma piada, migo.'},
-{id:'m12',t:'mid',f:s=>s.pts+' pontos e você já tá ofegante. O nível 5 nem sabe que você existe.'},
-{id:'m13',t:'mid',f:s=>'Você fez '+s.weekClicks+' ações e acha que tá indo bem. Dá pra contar nos dedos, querido.'},
-{id:'m14',t:'mid',c:s=>s.nivel<=1,f:s=>'Nível 1 até agora. Você fez o básico e chamou de progresso.'},
-{id:'m15',t:'mid',f:s=>s.falta+' pontos. Dá pra fechar, se você parar de fingir que tem tempo, coração.'},
-{id:'m16',t:'high',f:s=>'Bateu a meta e ainda tá aqui. Não é dedicação, é falta do que fazer.'},
-{id:'m17',t:'high',f:s=>s.falta+' pontos pra terminar o que devia ter terminado na terça.'},
-{id:'m18',t:'high',f:s=>'Nível '+s.nivel+'. Agora ficou feio de verdade e você continua, benzinho.'},
-{id:'m19',t:'high',f:s=>'Cumpriu e vai começar tudo de novo segunda. Sozinho. Como sempre.'},
-{id:'m20',t:'ot',f:s=>'Overtime, '+s.pts+' pontos. Você continua porque não tem mais nada, e é isso.'},
-{id:'m21',t:'ot',f:s=>'Meta batida e '+s.extra+' de sobra. Ninguém pediu, ninguém viu. Só você e o relógio.'}];
-const $=s=>document.querySelector(s);
-const pad=n=>String(n).padStart(2,'0');
-const dISO=(d=new Date())=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-function mondayOf(d){d=d||new Date();const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x;}
-function yest(){const d=new Date();d.setDate(d.getDate()-1);return dISO(d);}
-function daysLeft(){const t=new Date();t.setHours(0,0,0,0);const e=new Date(t);e.setDate(e.getDate()+(7-((t.getDay()+6)%7)));return Math.round((e-t)/864e5);}
-function fmt(iso){try{return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){return '--'}}
-const byId={};A.forEach(a=>byId[a.id]=a);
-function base(a){return Math.round(a.lv*10*LEVELS[a.lv].mult);}
-function fresh(){return{week:dISO(mondayOf()),goal:null,goalAt:null,pts:0,counts:{},clicks:[],lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,ach:{},lost:0,life:0,total:0,achStreak:0,pool:[]};}
-let Q=[],TOASTS=[],tab='acoes',resetStep=0,vcard='';
-function load(){try{const r=localStorage.getItem(KEY);if(!r)return fresh();return Object.assign(fresh(),JSON.parse(r));}catch(e){return fresh();}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
-let state=load();
-function unlock(s,id){if(s.ach[id])return false;s.ach[id]=new Date().toISOString();save();Q.push(id);return true;}
-function rollover(){
-const cur=dISO(mondayOf());
-if(state.week===cur)return;
-const old=state.week;
-const diff=Math.max(1,Math.round((mondayOf().getTime()-mondayOf(new Date(old+'T00:00:00')).getTime())/6048e5));
-if(!state.achieved)state.lost+=diff;
-const wc=state.clicks.filter(c=>c.d>=old).length;
-if(wc===0)unlock(state,'vazio');
-if(state.achieved){state.achStreak++;if(state.achStreak>=3)unlock(state,'tresSemanas');}else state.achStreak=0;
-Object.assign(state,{week:cur,goal:null,goalAt:null,pts:0,counts:{},lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,pool:[]});
-save();}
-rollover();
-if(state.lastDay&&state.lastDay!==dISO()&&state.lastDay!==yest())state.dayStreak=0;
-function doneCount(lv){let c=0;for(const a of A)if(a.lv===lv&&state.counts[a.id])c++;return c;}
-function unlocked(){let u=1;for(let l=1;l<=5;l++)if(doneCount(l)>=4)u=l+1;return u;}
-function weekClicks(){return state.clicks.filter(c=>c.d>=state.week).length;}
-function snap(){return{falta:Math.max(0,(state.goal||0)-state.pts),pts:state.pts,dias:daysLeft(),streak:state.dayStreak,weekClicks:weekClicks(),nivel:unlocked(),extra:state.pts-(state.goal||0)};}
-function checkAch(h){
-const s=state;
-if(s.total===1)unlock(s,'primeiro');
-if(s.achieved)unlock(s,'primeiraMeta');
-if(s.dayStreak>=3)unlock(s,'streak3');
-if(s.dayStreak>=7)unlock(s,'streak7');
-for(let l=2;l<=6;l++)if(s.maxLevel>=l)unlock(s,'lv'+l);
-if(s.life>=1000)unlock(s,'mil');
-if(s.life>=5000)unlock(s,'cinco');
-if(s.transg>=3)unlock(s,'transg3');
-if(doneCount(1)>=6)unlock(s,'l1full');
-if(s.achieved&&s.pts>=(s.goal||0)+100)unlock(s,'sobra');
-if(h<8&&h>=0&&s.maxLevel>=4&&s.counts[lastLv4])unlock(s,'cedo');
-if(h>=23)unlock(s,'tarde');
-}
-let lastLv4=null;
-function click(id){
-const s=state,a=byId[id],u=unlocked();
-if(!s.goal||a.lv>u)return;
-const h=new Date().getHours(),today=dISO();
-if(s.lastDay!==today){s.dayStreak=(s.lastDay===yest())?s.dayStreak+1:1;s.lastDay=today;}
-const ld=s.lvlDays[a.lv]||{n:0,last:null};
-if(ld.last===yest())ld.n++;else if(ld.last!==today)ld.n=1;
-ld.last=today;s.lvlDays[a.lv]=ld;
-let p=base(a)+Math.min(ld.n,5)*5;
-if(a.lv>s.maxLevel){s.transg++;p+=20;TOASTS.push({t:'VOCÊ SUBIU DE NÍVEL',b:'Nível '+a.lv+', '+LEVELS[a.lv].name+'. Ninguém esperava, nem você. +20 de transgressão e o nível anterior fica pra trás.'});}
-s.maxLevel=Math.max(s.maxLevel,a.lv);
-s.pts+=p;s.life+=p;s.total++;
-s.counts[id]=(s.counts[id]||0)+1;
-s.clicks.push({d:today,h:pad(new Date().getHours())+':'+pad(new Date().getMinutes()),n:a.name,p:p});
-if(s.clicks.length>300)s.clicks.shift();
-if(h<8&&a.lv===4)unlock(s,'cedo');
-if(h>=23)unlock(s,'tarde');
-checkAch(h);
-if(!s.achieved&&s.pts>=s.goal){s.achieved=true;s.ot=true;TOASTS.push({t:'PARABÉNS, VOCÊ CONSEGUIU O MÍNIMO',b:s.pts+' pontos numa meta de '+s.goal+'. O mínimo de alguém que não tem mais nada acontecendo. Overtime liberado, e não é elogio.'});}
-save();render();
-}
-function pick(){
-const s=state,sn=snap();let cands;
-if(s.ot)cands=POOL.filter(p=>p.t==='ot');
-else{const pct=s.goal?Math.min(100,s.pts/s.goal*100):0;const tier=pct<=40?'low':pct<=80?'mid':'high';
-cands=POOL.filter(p=>p.t===tier&&(!p.c||p.c(sn)));}
-if(!cands.length)cands=POOL.filter(p=>p.t==='low');
-let av=cands.filter(p=>s.pool.indexOf(p.id)<0);
-if(!av.length){s.pool=s.pool.filter(i=>!cands.some(c=>c.id===i));av=cands;}
-const p=av[Math.floor(Math.random()*av.length)];
-s.pool.push(p.id);save();
-return p.f(sn);}
-function render(){
-const s=state,u=unlocked();
-const pct=s.goal?Math.min(100,s.pts/s.goal*100):0;
-let cards='';
-TOASTS.forEach(c=>{cards+='<div class="card"><div class="ttl">'+c.t+'</div><p>'+c.b+'</p><button>ACEITAR CALADO</button></div>';});
-TOASTS=[];
-Q.forEach(id=>{const a=ACHS.find(x=>x.id===id);if(!a)return;cards+='<div class="card ach"><div class="ttl">CONQUISTA: '+a.name+'</div><p>'+a.desc+'</p><button>ACEITAR CALADO</button></div>';});
-Q=[];
-$('#cards').innerHTML=cards;
-$('#cards').querySelectorAll('button').forEach(b=>b.onclick=()=>b.parentNode.remove());
-$('#gate').innerHTML=s.goal
-?'<div class="selo">META FECHADA · '+fmt(s.goalAt)+' · '+s.goal+' PONTOS<br><span>pediu isso, agora aguenta</span></div>'
-:'<div class="gate"><p>Definir a meta é a parte fácil, e você já tá demorando. Escolhe um número de 100 a 1000 e fecha. Depois não tem ajuste, não tem segunda chance, não tem desculpa.</p><div class="row"><input id="gin" type="number" min="100" max="1000" value="300" aria-label="meta semanal em pontos"><button class="primary" id="gbtn">FECHAR A META</button></div></div>';
-const gb=$('#gbtn');
-if(gb)gb.onclick=()=>{let v=parseInt($('#gin').value,10);if(isNaN(v))v=300;v=Math.max(100,Math.min(1000,v));s.goal=v;s.goalAt=new Date().toISOString();save();render();};
-const S=[['META',s.goal||'--','a que você mesmo pediu'],['PONTOS','<span aria-live="polite">'+s.pts+'</span>','contando migalha'],['%',Math.round(pct)+'%','do combinado'],['DIAS',daysLeft(),'e você parado'],['STREAK',s.dayStreak,'dias seguidos, olhe lá'],['NÍVEL',u+'/6','até onde aguentou']];
-$('#panel').innerHTML=S.map(x=>'<div class="stat"><b>'+x[0]+'</b><i>'+x[1]+'</i><span class="m">'+x[2]+'</span></div>').join('');
-const bar=$('#bar');
-if(!s.goal){bar.className='bar striped';bar.style.width='100%';}
-else{bar.className='bar '+(pct<=33?'c-red':pct<=66?'c-muc':pct<100?'c-gre':'c-pur');bar.style.width=pct+'%';}
-$('#t1').classList.toggle('on',tab==='acoes');
-$('#t2').classList.toggle('on',tab==='verg');
-$('#t3').classList.toggle('on',tab==='conq');
-let v='';
-if(tab==='acoes'){
- for(let lv=1;lv<=6;lv++){
-  const d=doneCount(lv),locked=lv>u;
-  v+='<section class="'+(locked?'locked':'')+'"><div class="lvhead"><h2>'+lv+'. '+LEVELS[lv].name+(locked?' · CADEADO':'')+'</h2><span class="mult">'+LEVELS[lv].mult+'x</span><span class="cnt">'+d+'/6</span></div><p class="lvt">'+LEVELS[lv].tag+'</p>';
-  if(locked){v+='<p class="lockline">Faltam '+Math.max(0,4-doneCount(lv-1))+' ações do nível '+(lv-1)+'. '+LOCK[lv]+'</p>';}
-  else{
-   v+=A.filter(a=>a.lv===lv).map(a=>{const c=s.counts[a.id]||0;
-    return '<div class="act"><div class="top"><h3>'+a.name+'</h3><span class="pts">'+base(a)+' pts</span></div><p>'+a.desc+'</p><div class="meta"><span>cumprida '+c+'x</span><button data-a="'+a.id+'"'+(!s.goal?' disabled':'')+'>+ CUMPRI</button></div></div>';}).join('');
+  const KEY='maogame_v2';
+  const DAY=86400000;
+  const DIVS=[
+    {n:1,name:'Iniciante',pts:1},
+    {n:2,name:'Intermediário',pts:2},
+    {n:3,name:'Avançado',pts:4},
+    {n:4,name:'Expert',pts:7},
+    {n:5,name:'Lendário',pts:11}
+  ];
+  const ACTIONS=[
+    {id:'a1',d:1,n:'Sessão rápida (5 min)'},
+    {id:'a2',d:1,n:'Só com a mão, sem pressa'},
+    {id:'a3',d:1,n:'Sessão no chuveiro'},
+    {id:'a4',d:1,n:'Edging leve (parar 3x)'},
+    {id:'a5',d:1,n:'Deitado no sofá'},
+    {id:'a6',d:1,n:'De pé'},
+    {id:'a7',d:2,n:'Sessão com lubrificante'},
+    {id:'a8',d:2,n:'Sessão de 20+ minutos'},
+    {id:'a9',d:2,n:'Edging de 10 minutos'},
+    {id:'a10',d:2,n:'Sessão com brinquedo'},
+    {id:'a11',d:2,n:'Sem usar as mãos por 2 min'},
+    {id:'a12',d:2,n:'Sessão com acessório de pressão'},
+    {id:'a13',d:3,n:'Sessão de 30+ minutos'},
+    {id:'a14',d:3,n:'Edging de 20 min com 5 paradas'},
+    {id:'a15',d:3,n:'Sessão com dois brinquedos'},
+    {id:'a16',d:3,n:'Sessão no escuro total'},
+    {id:'a17',d:3,n:'Sessão com música alta'},
+    {id:'a18',d:3,n:'Duas sessões no mesmo dia'},
+    {id:'a19',d:4,n:'Sessão de 45+ minutos'},
+    {id:'a20',d:4,n:'Edging de 30+ minutos'},
+    {id:'a21',d:4,n:'Sessão com gelo ou calor'},
+    {id:'a22',d:4,n:'Sessão vendado'},
+    {id:'a23',d:4,n:'Sessão com plug'},
+    {id:'a24',d:4,n:'Três sessões no mesmo dia'},
+    {id:'a25',d:5,n:'Sessão de 1 hora'},
+    {id:'a26',d:5,n:'Edging de 45 min com 10 paradas'},
+    {id:'a27',d:5,n:'Sessão inteira sem ejacular'},
+    {id:'a28',d:5,n:'Sessão dupla (manhã e noite)'},
+    {id:'a29',d:5,n:'Sessão com 3+ brinquedos'},
+    {id:'a30',d:5,n:'Maratona de 2 horas'}
+  ];
+  const ACH=[
+    {id:'c1',t:'Primeira vez',d:'Registre sua primeira ação.',i:'01',f:s=>s.totalActions>=1},
+    {id:'c2',t:'Meta definida',d:'Defina uma meta de ciclo.',i:'02',f:s=>s.goal!==null},
+    {id:'c3',t:'Meta batida',d:'Alcance 100% da meta do ciclo.',i:'03',f:s=>s.goal&&s.points>=s.goal},
+    {id:'c4',t:'Dobradinha',d:'Dobre a meta do ciclo.',i:'04',f:s=>s.goal&&s.points>=s.goal*2},
+    {id:'c5',t:'Trinca',d:'Sequência de 3 dias.',i:'05',f:s=>s.streak>=3},
+    {id:'c6',t:'Semana cheia',d:'Sequência de 7 dias.',i:'06',f:s=>s.streak>=7},
+    {id:'c7',t:'Mês inteiro',d:'Sequência de 30 dias.',i:'07',f:s=>s.streak>=30},
+    {id:'c8',t:'Saindo do básico',d:'Conclua a divisão Iniciante.',i:'08',f:s=>divDone(1)},
+    {id:'c9',t:'Aquecido',d:'Conclua a divisão Intermediário.',i:'09',f:s=>divDone(2)},
+    {id:'c10',t:'Sem freio',d:'Conclua a divisão Avançado.',i:'10',f:s=>divDone(3)},
+    {id:'c11',t:'Veterano',d:'Conclua a divisão Expert.',i:'11',f:s=>divDone(4)},
+    {id:'c12',t:'Lenda',d:'Conclua a divisão Lendário.',i:'12',f:s=>divDone(5)},
+    {id:'c13',t:'Explorador',d:'5 ações diferentes no mesmo ciclo.',i:'13',f:s=>distinct()>=5},
+    {id:'c14',t:'Polímata',d:'10 ações diferentes no mesmo ciclo.',i:'14',f:s=>distinct()>=10},
+    {id:'c15',t:'Maratonista',d:'25 ações registradas num ciclo.',i:'15',f:s=>cycleTotal()>=25},
+    {id:'c16',t:'Centurião',d:'100 pontos num único ciclo.',i:'16',f:s=>s.points>=100},
+    {id:'c17',t:'Madrugador',d:'Registre uma ação antes das 7h.',i:'17',f:s=>s.early===true},
+    {id:'c18',t:'Coruja',d:'Registre uma ação depois das 23h.',i:'18',f:s=>s.late===true}
+  ];
+
+  let S=null, tab='home', selPreset=null, ticker=null;
+
+  function blank(){
+    return {goal:null,cycleEnd:0,points:0,weekActions:{},done:{},totalActions:0,totalPoints:0,
+      streak:0,best:0,lastAction:null,ach:{},early:false,late:false,cycles:0,log:[]};
   }
-  v+='</section>';
- }
-}
-if(tab==='verg'){
- v+='<button class="primary big" id="verg">PEDIR VERGONHA</button><div class="vcard" id="vcard">'+vcard+'</div>';
-}
-if(tab==='conq'){
- const got=Object.keys(s.ach).length;
- v+='<p class="lvt">'+got+'/18 reveladas · nenhuma anunciada antes da hora</p><div class="achs">';
- v+=ACHS.map(a=>{const g=s.ach[a.id];
-  return g?'<div class="ach on"><b>'+a.name+'</b>'+a.desc+'<time>'+fmt(g)+'</time></div>':'<div class="ach sealed"><b>???</b>'+a.hint+'</div>';}).join('');
- v+='</div><p class="lost">'+s.lost+' semanas fechadas sem bater a meta. Esse número só sobe.</p>';
-}
-$('#view').innerHTML=v;
-const vb=$('#verg');
-if(vb)vb.onclick=()=>{vcard='<div class="card"><div class="ttl">VERGONHA</div><p>'+pick()+'</p><button id="acc">ACEITAR CALADO</button></div>';$('#vcard').innerHTML=vcard;$('#acc').onclick=()=>{vcard='';$('#vcard').innerHTML='';};};
-$('#view').querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>click(b.dataset.a));
-const h=$('#hist'),last=s.clicks.slice(-10).reverse();
-h.innerHTML=last.length?last.map(c=>'<li><b>'+c.n+'</b><span>'+c.h+' · +'+c.p+'</span></li>').join(''):'<li><b>nada registrado. como sempre.</b></li>';
-$('#resetbox').innerHTML=resetStep===0
-?'<button class="ghost" id="rst" style="margin-top:10px;width:100%">ZERAR SEMANA</button>'
-:'<div class="card" style="margin-top:10px"><p>tem certeza mesmo? o estrago já foi feito, os pontos já foram. A meta não volta e as conquistas ficam.</p><div class="row"><button class="primary" id="rty">ZEREI, SIM</button><button id="rtn">DEIXA</button></div></div>';
-if($('#rst'))$('#rst').onclick=()=>{resetStep=1;render();};
-if($('#rtn'))$('#rtn').onclick=()=>{resetStep=0;render();};
-if($('#rty'))$('#rty').onclick=()=>{resetStep=0;Object.assign(state,{pts:0,counts:{},lvlDays:{},dayStreak:0,lastDay:null,maxLevel:0,transg:0,achieved:false,ot:false,pool:[]});vcard='';save();render();};
-}
-$('#t1').onclick=()=>{tab='acoes';render();};
-$('#t2').onclick=()=>{tab='verg';render();};
-$('#t3').onclick=()=>{tab='conq';render();};
-render();
+  const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const msLeft=()=>S.cycleEnd-Date.now();
+  function timeLeft(){
+    const ms=msLeft();
+    if(ms<=0) return '0h';
+    const d=Math.floor(ms/DAY), h=Math.floor((ms%DAY)/3600000);
+    if(d===0) return h+'h';
+    return d+(d===1?' dia':' dias');
+  }
+  function stamp(ts){
+    const d=new Date(ts), p=n=>String(n).padStart(2,'0');
+    return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' · '+p(d.getHours())+':'+p(d.getMinutes());
+  }
+  function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+  function load(){
+    try{ const r=localStorage.getItem(KEY); if(r) return Object.assign(blank(),JSON.parse(r)); }catch(e){}
+    return blank();
+  }
+  function rollover(){
+    if(!Array.isArray(S.log)) S.log=[];
+    if(S.goal!==null && !S.cycleEnd) S.cycleEnd=Date.now()+7*DAY;
+    if(S.goal!==null && Date.now()>=S.cycleEnd){
+      S.cycles++; S.goal=null; S.cycleEnd=0; S.points=0; S.weekActions={}; S.early=false; S.late=false;
+    }
+    const t=ymd(new Date());
+    if(S.lastAction){
+      const y=new Date(); y.setDate(y.getDate()-1);
+      if(S.lastAction!==t && S.lastAction!==ymd(y)) S.streak=0;
+    }
+  }
+  const distinct=()=>Object.keys(S.weekActions).length;
+  const cycleTotal=()=>Object.values(S.weekActions).reduce((a,b)=>a+b,0);
+  function divDone(n){ return ACTIONS.filter(a=>a.d===n).every(a=>(S.done[a.id]||0)>0); }
+  function divUnlocked(n){ if(n===1) return true; if(n>5) return true; return divDone(n-1); }
+  function mult(){
+    const d=distinct();
+    if(d>=12) return 2.2; if(d>=8) return 1.8; if(d>=5) return 1.5; if(d>=3) return 1.2; return 1;
+  }
+  function basePts(id){ const a=ACTIONS.find(x=>x.id===id); return DIVS.find(d=>d.n===a.d).pts; }
+
+  function toast(msg,cls){
+    const w=document.getElementById('toasts');
+    const el=document.createElement('div'); el.className='toast '+(cls||''); el.textContent=msg;
+    w.appendChild(el); setTimeout(()=>{el.style.opacity=0;setTimeout(()=>el.remove(),300);},3600);
+  }
+  function checkAch(){
+    ACH.forEach(a=>{ if(!S.ach[a.id] && a.f(S)){ S.ach[a.id]=true; save(); toast('Conquista desbloqueada: '+a.t,'y'); } });
+  }
+
+  function register(id){
+    if(S.goal===null){ toast('Defina a meta antes de registrar ações','err'); return; }
+    const a=ACTIONS.find(x=>x.id===id);
+    if(!divUnlocked(a.d)){ toast('Conclua a divisão anterior primeiro','err'); return; }
+    const h=new Date().getHours();
+    if(h<7) S.early=true;
+    if(h>=23) S.late=true;
+
+    S.weekActions[id]=(S.weekActions[id]||0)+1;
+    S.done[id]=(S.done[id]||0)+1;
+    S.totalActions++;
+    const gained=Math.round(basePts(id)*mult());
+    S.points+=gained;
+    S.totalPoints+=gained;
+
+    S.log.unshift({ts:Date.now(),id:a.id,n:a.n,d:a.d,p:gained});
+
+    const t=ymd(new Date());
+    if(S.lastAction!==t){
+      const y=new Date(); y.setDate(y.getDate()-1);
+      S.streak = (S.lastAction===ymd(y)) ? S.streak+1 : 1;
+      S.lastAction=t;
+    } else if(!S.lastAction){ S.lastAction=t; }
+    if(S.streak>S.best) S.best=S.streak;
+
+    save();
+    toast('+'+gained+' pts · '+a.n+(mult()>1?'  (x'+mult()+')':''));
+    checkAch();
+    render();
+  }
+
+  function setGoal(v){
+    const n=Math.round(Number(v));
+    if(!n||n<10){ toast('Meta mínima: 10 pontos','err'); return; }
+    S.goal=n; S.cycleEnd=Date.now()+7*DAY; save(); checkAch(); render();
+    toast('Meta travada em '+n+' pontos por 7 dias');
+  }
+
+  function render(){
+    document.getElementById('stk').textContent=S.streak;
+    const m=document.getElementById('main');
+    if(tab==='home') m.innerHTML=homeHTML();
+    if(tab==='acts') m.innerHTML=actsHTML();
+    if(tab==='hist') m.innerHTML=histHTML();
+    if(tab==='ach') m.innerHTML=achHTML();
+    wire();
+    if(ticker) clearInterval(ticker);
+    ticker=setInterval(()=>{
+      if(S.goal!==null && msLeft()<=0){ rollover(); save(); render(); }
+      else if(tab==='home' && S.goal!==null){ const e=document.getElementById('tl'); if(e) e.textContent='faltam '+timeLeft(); }
+    },30000);
+  }
+
+  function homeHTML(){
+    const pct=S.goal?Math.min(100,Math.round(S.points/S.goal*100)):0;
+    const urgent=S.goal!==null && msLeft()<DAY;
+    let goalCard;
+    if(S.goal===null){
+      goalCard=`<div class="card">
+        <div class="row between"><h2 style="margin:0">definir meta do ciclo</h2><span class="tag lock">obrigatório</span></div>
+        <p class="small" style="margin:8px 0 2px">Escolha o alvo de pontos. O ciclo é de 7 dias corridos a partir de agora e a meta fica travada até ele acabar.</p>
+        <div class="presets">
+          ${[50,100,175,250,400,600].map(v=>`<button data-p="${v}" class="${selPreset===v?'sel':''}">${v}</button>`).join('')}
+        </div>
+        <div class="row" style="gap:8px">
+          <input type="number" id="gi" placeholder="ou digite" min="10" step="5" value="${selPreset||''}">
+          <button class="btn" id="gset" style="width:auto;padding:10px 18px;white-space:nowrap">definir</button>
+        </div>
+      </div>`;
+    } else {
+      goalCard=`<div class="card">
+        <div class="row between"><h2 style="margin:0">meta do ciclo</h2><span class="tag">travada</span></div>
+        <div class="goal-num">${S.points}<span> / ${S.goal}</span></div>
+        <div class="bar ${pct>=100?'full':''}"><i style="width:${pct}%"></i></div>
+        <div class="row between small"><span class="green">${pct}% concluído</span><span class="yellow" id="tl">faltam ${timeLeft()}</span></div>
+      </div>`;
+    }
+    return `
+      <div class="stats">
+        <div class="stat"><div class="v yellow">${S.streak}</div><div class="l">sequência</div></div>
+        <div class="stat"><div class="v green">${S.points}</div><div class="l">pontos</div></div>
+        <div class="stat"><div class="v ${urgent?'yellow':''}">${S.goal!==null?Math.max(0,Math.ceil(msLeft()/DAY)):'—'}</div><div class="l">dias restantes</div></div>
+      </div>
+      ${goalCard}
+      <div class="card">
+        <div class="row between"><span class="small">ações distintas neste ciclo</span><span class="yellow" style="font-size:13px;font-weight:500">${distinct()} · x${mult()}</span></div>
+        <div class="mult"><span>variedade aumenta cada ponto</span><b>${S.totalActions} ações no total</b></div>
+      </div>
+      <div class="card">
+        <div class="row between"><span class="small">divisões concluídas</span><span class="small">${DIVS.filter(d=>divDone(d.n)).length}/5</span></div>
+        <div class="bar"><i style="width:${DIVS.filter(d=>divDone(d.n)).length/5*100}%"></i></div>
+        <div class="row between small" style="margin-top:6px"><span>recorde de sequência</span><span class="yellow">${S.best} d</span></div>
+        <div class="row between small" style="margin-top:3px"><span>pontos acumulados</span><span class="green">${S.totalPoints}</span></div>
+        <div class="row between small" style="margin-top:3px"><span>ciclos finalizados</span><span class="green">${S.cycles}</span></div>
+      </div>`;
+  }
+
+  function actsHTML(){
+    let h='';
+    if(S.goal===null) h+=`<div class="lockmsg">Defina a meta na aba Início para liberar o registro de ações.</div>`;
+    DIVS.forEach(d=>{
+      const list=ACTIONS.filter(a=>a.d===d.n);
+      const done=list.filter(a=>(S.done[a.id]||0)>0).length;
+      const un=divUnlocked(d.n);
+      const full=done===list.length;
+      h+=`<div class="divhead ${un?'':'locked'}">
+        <span class="nm">divisão ${d.n} · ${d.name} <b>+${d.pts}</b></span>
+        <span class="pg">${un?(full?'completa':done+'/'+list.length):'bloqueada'}</span>
+      </div>`;
+      if(!un){
+        h+=`<div class="empty" style="padding:12px">conclua a divisão ${d.n-1} por inteiro</div>`;
+        return;
+      }
+      list.forEach(a=>{
+        const c=S.done[a.id]||0;
+        h+=`<button class="action" data-a="${a.id}" ${S.goal===null?'disabled':''}>
+          <span>${a.n}${c?`<span class="done">${c}x</span>`:''}</span>
+          <span class="pts">+${Math.round(d.pts*mult())}</span>
+        </button>`;
+      });
+    });
+    return h;
+  }
+
+  function histHTML(){
+    const total=S.totalActions;
+    const pts=S.totalPoints;
+    const ciclo=S.log.filter(e=>S.goal!==null && e.ts>=S.cycleEnd-7*DAY).length;
+    let h=`<div class="stats">
+      <div class="stat"><div class="v green">${total}</div><div class="l">ações totais</div></div>
+      <div class="stat"><div class="v yellow">${pts}</div><div class="l">pontos totais</div></div>
+      <div class="stat"><div class="v">${ciclo}</div><div class="l">neste ciclo</div></div>
+    </div>`;
+    if(!S.log.length){
+      return h+`<div class="empty">nenhuma ação registrada ainda.<br>Defina a meta e comece a jogar.</div>`;
+    }
+    h+=`<div class="row between" style="margin:4px 2px 8px"><span class="small">${S.log.length} registros · mais recente primeiro</span></div>`;
+    h+=S.log.slice(0,250).map(e=>{
+      const dv=DIVS.find(d=>d.n===e.d);
+      return `<div class="log">
+        <div><div class="when">${stamp(e.ts)} · div ${e.d} ${dv?dv.name:''}</div><div class="what">${e.n}</div></div>
+        <div class="pt">+${e.p}</div>
+      </div>`;
+    }).join('');
+    if(S.log.length>250) h+=`<div class="empty" style="padding:12px">mostrando as 250 ações mais recentes</div>`;
+    return h;
+  }
+
+  function achHTML(){
+    const un=ACH.filter(a=>S.ach[a.id]).length;
+    let h=`<div class="card"><div class="row between"><span class="small">desbloqueadas</span><span class="yellow" style="font-weight:500">${un} / 18</span></div>
+      <div class="bar" style="margin-top:8px"><i style="width:${un/18*100}%"></i></div></div>`;
+    h+=ACH.map(a=>`<div class="ach ${S.ach[a.id]?'un':''}">
+      <div class="ico">${S.ach[a.id]?'✓':a.i}</div>
+      <div><div class="t">${a.t}</div><div class="d">${a.d}</div></div>
+    </div>`).join('');
+    return h;
+  }
+
+  function wire(){
+    document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{ selPreset=Number(b.dataset.p); render(); });
+    const gs=document.getElementById('gset');
+    if(gs) gs.onclick=()=>{ const i=document.getElementById('gi'); setGoal(i.value); };
+    const gi=document.getElementById('gi');
+    if(gi) gi.onkeydown=e=>{ if(e.key==='Enter') setGoal(gi.value); };
+    document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>register(b.dataset.a));
+  }
+
+  document.querySelectorAll('nav button').forEach(b=>{
+    b.onclick=()=>{
+      tab=b.dataset.tab; selPreset=null;
+      document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+      render();
+    };
+  });
+  document.getElementById('reset').onclick=()=>{
+    if(confirm('Apagar todo o progresso, pontos e conquistas?')){ S=blank(); save(); render(); }
+  };
+
+  S=load(); rollover(); save(); checkAch(); render();
 })();
 </script>
 </body>
-  </html>
+</html>
