@@ -45,6 +45,7 @@
   .bar.full i{background:var(--yellow)}
   .tag{border:1px solid var(--line);color:var(--muted);border-radius:1px;padding:2px 7px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
   .tag.lock{border-color:var(--yellow);color:var(--yellow)}
+  .tag.sec{border-color:var(--yellow);color:var(--yellow);background:#1a1706}
   input[type=number]{background:#0e1409;border:1px solid var(--line);color:var(--text);border-radius:2px;padding:10px 11px;font-size:14px;font-family:inherit;width:100%;outline:none}
   input[type=number]:focus{border-color:var(--green)}
   .presets{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}
@@ -61,10 +62,13 @@
   .divhead .nm b{color:var(--yellow)}
   .divhead .pg{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
   .divhead.locked .nm{color:#5d6b52}
+  .divhead.secret{border-bottom:1px dashed var(--yellow);margin-top:22px}
+  .divhead.secret .nm{color:var(--yellow)}
   .actrow{display:flex;gap:4px;margin-bottom:5px}
   .action{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:10px 11px;color:var(--text);cursor:pointer;font-family:inherit;font-size:12.8px;transition:.12s}
   .action:hover:not(:disabled){border-color:var(--green);background:var(--panel2)}
   .action:disabled{opacity:.4;cursor:not-allowed}
+  .action.sec{border-left:2px solid var(--yellow)}
   .action .pts{color:var(--yellow);font-size:11.5px;font-weight:500;white-space:nowrap;border:1px solid #3a3413;background:#1a1706;border-radius:1px;padding:3px 7px}
   .action .done{color:var(--green);font-size:10px;border:1px solid #2c4019;border-radius:1px;padding:1px 4px;margin-left:6px}
   .tbtn{width:38px;flex:0 0 38px;background:#0e1409;border:1px solid var(--line);color:var(--green-d);border-radius:2px;cursor:pointer;font-size:13px;font-family:inherit}
@@ -77,11 +81,22 @@
   .lockmsg{background:#141a0a;border:1px dashed var(--yellow);color:var(--yellow);border-radius:2px;padding:10px 12px;font-size:12.5px;margin-bottom:11px}
   .ach{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:10px 12px;margin-bottom:5px}
   .ach.un{border-color:var(--green);background:#0f1708}
-  .ach .ico{width:28px;height:28px;flex:0 0 28px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;background:#151d0e;color:#4d5c42;border:1px solid var(--line)}
+  .ach.sec{border-style:dashed}
+  .ach.sec.un{border-style:solid}
+  .ach .ico{width:28px;height:28px;flex:0 0 28px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;background:#151d0e;color:#4d5c42;border:1px solid var(--line)}
   .ach.un .ico{background:var(--green);color:#050604;border-color:var(--green)}
   .ach .t{font-size:12.8px;font-weight:500}
   .ach .d{font-size:11.5px;color:var(--muted)}
   .ach.un .t{color:var(--green)}
+  .ach.sec:not(.un) .t{color:#5d6b52;letter-spacing:.1em}
+  .plat{border:1px solid var(--yellow);background:#120f04;border-radius:3px;padding:14px;margin-top:8px}
+  .plat.on{background:#1c1a06;border-color:var(--yellow)}
+  .plat .hd{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .plat .star{width:34px;height:34px;border-radius:2px;display:flex;align-items:center;justify-content:center;background:#1a1706;color:#6b6432;border:1px solid #3a3413;font-size:15px}
+  .plat.on .star{background:var(--yellow);color:#050604;border-color:var(--yellow)}
+  .plat .t{font-size:13.5px;font-weight:500;color:var(--yellow);letter-spacing:.1em;text-transform:uppercase}
+  .plat .d{font-size:11.5px;color:#a89a4f;margin-top:2px}
+  .plat .p{font-size:11px;color:var(--muted);margin-top:9px;font-variant-numeric:tabular-nums}
   .log{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--green-d);border-radius:2px;padding:8px 11px;margin-bottom:4px}
   .log .when{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.02em}
   .log .what{font-size:12.5px;margin-top:2px}
@@ -135,39 +150,60 @@
     {n:2,name:'Intermediário',pts:2},
     {n:3,name:'Avançado',pts:4},
     {n:4,name:'Expert',pts:7},
-    {n:5,name:'Lendário',pts:11}
+    {n:5,name:'Lendário',pts:11},
+    {n:6,name:'Sem Noção',pts:18,secret:true}
   ];
   const ACTIONS=[
-    {id:'a1',d:1,n:'Sessão rápida (5 min)'},
-    {id:'a2',d:1,n:'Só com a mão, sem pressa'},
-    {id:'a3',d:1,n:'Sessão no chuveiro'},
-    {id:'a4',d:1,n:'Edging leve (parar 3x)'},
-    {id:'a5',d:1,n:'Deitado no sofá'},
-    {id:'a6',d:1,n:'De pé'},
-    {id:'a7',d:2,n:'Sessão com lubrificante'},
-    {id:'a8',d:2,n:'Sessão de 20+ minutos'},
-    {id:'a9',d:2,n:'Edging de 10 minutos'},
-    {id:'a10',d:2,n:'Sessão com brinquedo'},
-    {id:'a11',d:2,n:'Sem usar as mãos por 2 min'},
-    {id:'a12',d:2,n:'Sessão com acessório de pressão'},
-    {id:'a13',d:3,n:'Sessão de 30+ minutos'},
-    {id:'a14',d:3,n:'Edging de 20 min com 5 paradas'},
-    {id:'a15',d:3,n:'Sessão com dois brinquedos'},
-    {id:'a16',d:3,n:'Sessão no escuro total'},
-    {id:'a17',d:3,n:'Sessão com música alta'},
-    {id:'a18',d:3,n:'Duas sessões no mesmo dia'},
-    {id:'a19',d:4,n:'Sessão de 45+ minutos'},
-    {id:'a20',d:4,n:'Edging de 30+ minutos'},
-    {id:'a21',d:4,n:'Sessão com gelo ou calor'},
-    {id:'a22',d:4,n:'Sessão vendado'},
-    {id:'a23',d:4,n:'Sessão com plug'},
-    {id:'a24',d:4,n:'Três sessões no mesmo dia'},
-    {id:'a25',d:5,n:'Sessão de 1 hora'},
-    {id:'a26',d:5,n:'Edging de 45 min com 10 paradas'},
-    {id:'a27',d:5,n:'Sessão inteira sem ejacular'},
-    {id:'a28',d:5,n:'Sessão dupla (manhã e noite)'},
-    {id:'a29',d:5,n:'Sessão com 3+ brinquedos'},
-    {id:'a30',d:5,n:'Maratona de 2 horas'}
+    {id:'a1',d:1,n:'Sessão rápida'},
+    {id:'a2',d:1,n:'No chuveiro'},
+    {id:'a3',d:1,n:'Deitado na cama'},
+    {id:'a4',d:1,n:'De pé'},
+    {id:'a5',d:1,n:'Sentado na cadeira'},
+    {id:'a6',d:1,n:'Com lubrificante'},
+    {id:'a7',d:2,n:'De bruços'},
+    {id:'a8',d:2,n:'Gozar na mão e provar'},
+    {id:'a9',d:2,n:'Sem usar as mãos'},
+    {id:'a10',d:2,n:'Edging com pausas'},
+    {id:'a11',d:2,n:'No escuro'},
+    {id:'a12',d:2,n:'Com anel de pressão'},
+    {id:'a13',d:3,n:'Em frente ao espelho'},
+    {id:'a14',d:3,n:'Gozar no próprio peito'},
+    {id:'a15',d:3,n:'Vendado'},
+    {id:'a16',d:3,n:'Com música alta'},
+    {id:'a17',d:3,n:'Edging longo'},
+    {id:'a18',d:3,n:'Logo ao acordar'},
+    {id:'a19',d:4,n:'Gozar na meia e usar depois'},
+    {id:'a20',d:4,n:'Comer todo o gozo'},
+    {id:'a21',d:4,n:'Com as mãos amarradas'},
+    {id:'a22',d:4,n:'Sem ejacular até o fim'},
+    {id:'a23',d:4,n:'Três sessões no mesmo dia'},
+    {id:'a24',d:4,n:'Só por cima da roupa'},
+    {id:'a25',d:5,n:'Maratona'},
+    {id:'a26',d:5,n:'Edging extremo'},
+    {id:'a27',d:5,n:'Só na imaginação'},
+    {id:'a28',d:5,n:'Gozar na cueca e dormir com ela'},
+    {id:'a29',d:5,n:'Fora de casa'},
+    {id:'a30',d:5,n:'Antes de dormir'},
+    {id:'x1',d:6,n:'Camiseta levantada na boca'},
+    {id:'x2',d:6,n:'Plug já colocado antes de começar'},
+    {id:'x3',d:6,n:'Lubrificante em excesso, escorrendo'},
+    {id:'x4',d:6,n:'Boca cheia de saliva, babando'},
+    {id:'x5',d:6,n:'Meia suja no pé, sem tirar'},
+    {id:'x6',d:6,n:'Cueca do dia anterior na boca'},
+    {id:'x7',d:6,n:'Dois dedos dentro durante toda a sessão'},
+    {id:'x8',d:6,n:'Plug com vibração junto'},
+    {id:'x9',d:6,n:'Gelo na glande nas paradas'},
+    {id:'x10',d:6,n:'Vibração no períneo até gozar sem tocar'},
+    {id:'x11',d:6,n:'Gozar na própria cara e deixar escorrer'},
+    {id:'x12',d:6,n:'Gozar no espelho e limpar com a língua'},
+    {id:'x13',d:6,n:'Gozar na palma e passar no rosto'},
+    {id:'x14',d:6,n:'Gozar no próprio pé e lamber'},
+    {id:'x15',d:6,n:'Gozar no umbigo e depois lamber'},
+    {id:'x16',d:6,n:'Passar o dedo na poça e levar à boca'},
+    {id:'x17',d:6,n:'Ruined duplo: dois cortes no ápice antes do final'},
+    {id:'x18',d:6,n:'Gozar dentro do copo e beber'},
+    {id:'x19',d:6,n:'Gozar e não limpar a mão'},
+    {id:'x20',d:6,n:'Gozar e dormir sem limpar'}
   ];
   const ACH=[
     {id:'c1',t:'Primeira vez',d:'Registre sua primeira ação.',i:'01',f:s=>s.totalActions>=1},
@@ -187,7 +223,22 @@
     {id:'c15',t:'Maratonista',d:'25 ações registradas num ciclo.',i:'15',f:s=>cycleTotal()>=25},
     {id:'c16',t:'Centurião',d:'100 pontos num único ciclo.',i:'16',f:s=>s.points>=100},
     {id:'c17',t:'Madrugador',d:'Registre uma ação antes das 7h.',i:'17',f:s=>s.early===true},
-    {id:'c18',t:'Coruja',d:'Registre uma ação depois das 23h.',i:'18',f:s=>s.late===true}
+    {id:'c18',t:'Coruja',d:'Registre uma ação depois das 23h.',i:'18',f:s=>s.late===true},
+    {id:'s1',t:'Fantasma',d:'Registre uma ação entre 2h e 5h da manhã.',i:'??',sec:1,f:s=>s.ghost===true},
+    {id:'s2',t:'Relâmpago',d:'Cronometre uma sessão de menos de 30 segundos.',i:'??',sec:1,f:s=>s.flash===true},
+    {id:'s3',t:'Fôlego',d:'Cronometre uma sessão acima de 30 minutos.',i:'??',sec:1,f:s=>s.endur30===true},
+    {id:'s4',t:'Sem fundo',d:'Cronometre uma sessão acima de 60 minutos.',i:'??',sec:1,f:s=>s.endur60===true},
+    {id:'s5',t:'Dia cheio',d:'Registre 5 ações no mesmo dia.',i:'??',sec:1,f:s=>s.dayMax>=5},
+    {id:'s6',t:'Metódico',d:'Conclua uma divisão inteira no mesmo dia.',i:'??',sec:1,f:s=>s.sameDayDiv===true},
+    {id:'s7',t:'Corretor',d:'Use o desfazer pela primeira vez.',i:'??',sec:1,f:s=>s.usedUndo===true},
+    {id:'s8',t:'Constante',d:'Alcance uma sequência de 15 dias.',i:'??',sec:1,f:s=>s.streak>=15},
+    {id:'s9',t:'Catálogo',d:'Registre 12 ações diferentes num ciclo.',i:'??',sec:1,f:s=>distinct()>=12},
+    {id:'s10',t:'Longa jornada',d:'Bata a meta de um ciclo de 14 dias.',i:'??',sec:1,f:s=>s.cycleDays>=14&&s.goal&&s.points>=s.goal},
+    {id:'plat',t:'Platina',d:'Conclua todas as divisões, inclusive a secreta, e desbloqueie todas as conquistas.',i:'★',sec:1,sup:1,
+      f:s=>{
+        const outros=ACH.filter(a=>a.id!=='plat');
+        return outros.every(a=>s.ach[a.id]) && ACTIONS.every(a=>(s.done[a.id]||0)>0);
+      }}
   ];
 
   let S=null, tab='home', selPreset=null, selDays=7, ticker=null;
@@ -195,8 +246,9 @@
   function blank(){
     return {goal:null,cycleEnd:0,cycleStart:0,cycleDays:7,points:0,weekActions:{},done:{},
       totalActions:0,totalPoints:0,streak:0,best:0,lastAction:null,ach:{},early:false,late:false,
-      cycles:0,log:[],timer:null,undoStack:[],dayPts:{},awaitingClose:false,pendingSummary:null,
-      lastCyclePoints:0,
+      cycles:0,log:[],timer:null,undoStack:[],dayPts:{},dayCount:{},lastDoneDay:{},usedUndo:false,
+      ghost:false,flash:false,endur30:false,endur60:false,dayMax:0,sameDayDiv:false,
+      awaitingClose:false,pendingSummary:null,lastCyclePoints:0,
       records:{longestMs:0,longestName:'',bestDayPts:0,bestDayDate:'',bestCycle:0,bestDistinct:0}};
   }
   const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -268,13 +320,14 @@
   const distinct=()=>Object.keys(S.weekActions).length;
   const cycleTotal=()=>Object.values(S.weekActions).reduce((a,b)=>a+b,0);
   function divDone(n){ return ACTIONS.filter(a=>a.d===n).every(a=>(S.done[a.id]||0)>0); }
-  function divUnlocked(n){ if(n===1) return true; if(n>5) return true; return divDone(n-1); }
+  function divUnlocked(n){ if(n===1) return true; return divDone(n-1); }
   function mult(){
     const d=distinct();
     if(d>=12) return 2.2; if(d>=8) return 1.8; if(d>=5) return 1.5; if(d>=3) return 1.2; return 1;
   }
   function basePts(id){ const a=ACTIONS.find(x=>x.id===id); return DIVS.find(d=>d.n===a.d).pts; }
   function factor(ms){ return ms? Math.min(3, 1+(ms/60000)/10) : 1; }
+  function divTotal(){ return DIVS.filter(d=>divDone(d.n)).length; }
 
   function toast(msg,cls){
     const w=document.getElementById('toasts');
@@ -282,44 +335,50 @@
     w.appendChild(el); setTimeout(()=>{el.style.opacity=0;setTimeout(()=>el.remove(),250);},3600);
   }
   function checkAch(){
-    ACH.forEach(a=>{ if(!S.ach[a.id] && a.f(S)){ S.ach[a.id]=true; save(); toast('Conquista desbloqueada: '+a.t,'y'); } });
+    ACH.forEach(a=>{ if(!S.ach[a.id] && a.f(S)){ S.ach[a.id]=true; save();
+      toast(a.id==='plat'?'PLATINA: você platinou o jogo':(a.sec?'conquista secreta: '+a.t:'Conquista desbloqueada: '+a.t),'y'); } });
   }
-  function snap(){
-    const c=JSON.parse(JSON.stringify(S)); delete c.undoStack; return c;
-  }
+  function snap(){ const c=JSON.parse(JSON.stringify(S)); delete c.undoStack; return c; }
 
   function register(id, ms){
     if(S.goal===null){ toast('Defina a meta antes de registrar ações','err'); return; }
     const a=ACTIONS.find(x=>x.id===id);
     if(!divUnlocked(a.d)){ toast('Conclua a divisão anterior primeiro','err'); return; }
-    const h=new Date().getHours();
+    const now=new Date(), h=now.getHours(), today=ymd(now);
     if(h<7) S.early=true;
     if(h>=23) S.late=true;
+    if(h>=2 && h<5) S.ghost=true;
+    if(ms && ms<30000) S.flash=true;
+    if(ms && ms>=1800000) S.endur30=true;
+    if(ms && ms>=3600000) S.endur60=true;
 
     S.undoStack.push(snap());
     if(S.undoStack.length>12) S.undoStack.shift();
 
     S.weekActions[id]=(S.weekActions[id]||0)+1;
     S.done[id]=(S.done[id]||0)+1;
+    S.lastDoneDay[id]=today;
     S.totalActions++;
     const gained=Math.max(1,Math.round(basePts(id)*mult()*factor(ms)));
     S.points+=gained;
     S.totalPoints+=gained;
 
-    const today=ymd(new Date());
     S.dayPts[today]=(S.dayPts[today]||0)+gained;
+    S.dayCount[today]=(S.dayCount[today]||0)+1;
+    if(S.dayCount[today]>S.dayMax) S.dayMax=S.dayCount[today];
     if(S.dayPts[today]>(S.records.bestDayPts||0)){ S.records.bestDayPts=S.dayPts[today]; S.records.bestDayDate=today; }
     if(ms && ms>(S.records.longestMs||0)){ S.records.longestMs=ms; S.records.longestName=a.n; }
     if(distinct()>(S.records.bestDistinct||0)) S.records.bestDistinct=distinct();
 
+    if(divDone(a.d) && ACTIONS.filter(x=>x.d===a.d).every(x=>S.lastDoneDay[x.id]===today)) S.sameDayDiv=true;
+
     S.log.unshift({ts:Date.now(),id:a.id,n:a.n,d:a.d,p:gained,ms:ms||0});
 
-    const t=ymd(new Date());
-    if(S.lastAction!==t){
+    if(S.lastAction!==today){
       const y=new Date(); y.setDate(y.getDate()-1);
       S.streak=(S.lastAction===ymd(y))? S.streak+1 : 1;
-      S.lastAction=t;
-    } else if(!S.lastAction){ S.lastAction=t; }
+      S.lastAction=today;
+    } else if(!S.lastAction){ S.lastAction=today; }
     if(S.streak>S.best) S.best=S.streak;
 
     save();
@@ -333,8 +392,8 @@
     const prev=S.undoStack.pop();
     const stack=S.undoStack;
     S=Object.assign(blank(),prev);
-    S.undoStack=stack;
-    save(); render(); toast('último registro desfeito');
+    S.undoStack=stack; S.usedUndo=true;
+    save(); checkAch(); render(); toast('último registro desfeito');
   }
 
   function startTimer(id){
@@ -440,8 +499,8 @@
         <div class="mult"><span>variedade aumenta cada ponto</span><b>${S.totalActions} ações no total</b></div>
       </div>
       <div class="card">
-        <div class="row between"><span class="small">divisões concluídas</span><span class="small">${DIVS.filter(d=>divDone(d.n)).length}/5</span></div>
-        <div class="bar"><i style="width:${DIVS.filter(d=>divDone(d.n)).length/5*100}%"></i></div>
+        <div class="row between"><span class="small">divisões concluídas</span><span class="small">${divTotal()}/${DIVS.length}</span></div>
+        <div class="bar"><i style="width:${divTotal()/DIVS.length*100}%"></i></div>
         <div class="row between small" style="margin-top:6px"><span>recorde de sequência</span><span class="yellow">${S.best} d</span></div>
         <div class="row between small" style="margin-top:3px"><span>pontos acumulados</span><span class="green">${S.totalPoints}</span></div>
         <div class="row between small" style="margin-top:3px"><span>ciclos finalizados</span><span class="green">${S.cycles}</span></div>
@@ -471,16 +530,19 @@
       const done=list.filter(a=>(S.done[a.id]||0)>0).length;
       const un=divUnlocked(d.n);
       const full=done===list.length;
-      h+=`<div class="divhead ${un?'':'locked'}">
-        <span class="nm">divisão ${d.n} · ${d.name} <b>+${d.pts}</b></span>
+      h+=`<div class="divhead ${un?'':'locked'} ${d.secret?'secret':''}">
+        <span class="nm">${d.secret?'secreta · ':''}divisão ${d.n} · ${d.name} <b>+${d.pts}</b></span>
         <span class="pg">${un?(full?'completa':done+'/'+list.length):'bloqueada'}</span>
       </div>`;
-      if(!un){ h+=`<div class="empty" style="padding:11px">conclua a divisão ${d.n-1} por inteiro</div>`; return; }
+      if(!un){
+        h+=`<div class="empty" style="padding:11px">${d.secret?'conclua todas as divisões anteriores para destravar':'conclua a divisão '+(d.n-1)+' por inteiro'}</div>`;
+        return;
+      }
       list.forEach(a=>{
         const c=S.done[a.id]||0;
         const busy=!!S.timer;
         h+=`<div class="actrow">
-          <button class="action" data-a="${a.id}" ${S.goal===null||busy?'disabled':''}>
+          <button class="action ${d.secret?'sec':''}" data-a="${a.id}" ${S.goal===null||busy?'disabled':''}>
             <span>${a.n}${c?`<span class="done">${c}x</span>`:''}</span>
             <span class="pts">+${Math.round(d.pts*mult())}</span>
           </button>
@@ -530,13 +592,35 @@
   }
 
   function achHTML(){
+    const total=ACH.length;
     const un=ACH.filter(a=>S.ach[a.id]).length;
-    let h=`<div class="card"><div class="row between"><span class="small">desbloqueadas</span><span class="yellow" style="font-weight:500">${un} / 18</span></div>
-      <div class="bar" style="margin-top:8px"><i style="width:${un/18*100}%"></i></div></div>`;
-    h+=ACH.map(a=>`<div class="ach ${S.ach[a.id]?'un':''}">
+    const pub=ACH.filter(a=>!a.sec);
+    const sec=ACH.filter(a=>a.sec&&!a.sup);
+    const plat=ACH.find(a=>a.sup);
+    const secUn=sec.filter(a=>S.ach[a.id]).length;
+    let h=`<div class="card"><div class="row between"><span class="small">desbloqueadas</span><span class="yellow" style="font-weight:500">${un} / ${total}</span></div>
+      <div class="bar" style="margin-top:8px"><i style="width:${un/total*100}%"></i></div></div>`;
+    h+=pub.map(a=>`<div class="ach ${S.ach[a.id]?'un':''}">
       <div class="ico">${S.ach[a.id]?'✓':a.i}</div>
       <div><div class="t">${a.t}</div><div class="d">${a.d}</div></div>
     </div>`).join('');
+    h+=`<div class="divhead"><span class="nm">secretas <b>${secUn}/${sec.length}</b></span><span class="pg">${sec.length-secUn} restantes</span></div>`;
+    h+=sec.map(a=>`<div class="ach sec ${S.ach[a.id]?'un':''}">
+      <div class="ico">${S.ach[a.id]?'✓':'??'}</div>
+      <div><div class="t">${S.ach[a.id]?a.t:'???'}</div><div class="d">${S.ach[a.id]?a.d:'??? ??? ???'}</div></div>
+    </div>`).join('');
+    const on=!!S.ach[plat.id];
+    const doneAch=ACH.filter(a=>a.id!==plat.id&&S.ach[a.id]).length;
+    const doneActs=ACTIONS.filter(a=>(S.done[a.id]||0)>0).length;
+    h+=`<div class="divhead"><span class="nm">suprema</span><span class="pg">${on?'conquistada':'travada'}</span></div>
+    <div class="plat ${on?'on':''}">
+      <div class="hd">
+        <div class="star">${on?'★':'?'}</div>
+        <div><div class="t">${on?'Platina':'???'}</div>
+        <div class="d">${on?plat.d:'??? ??? ??? ???'}</div></div>
+      </div>
+      <div class="p">conquistas ${doneAch}/${ACH.length-1} · ações ${doneActs}/${ACTIONS.length}</div>
+    </div>`;
     return h;
   }
 
